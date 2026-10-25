@@ -143,31 +143,16 @@ Mỗi ca bắt đầu từ bộ dữ liệu trên và giá mẫu, trừ khi ca m
 
 ### 4.2. Các ca nghiệm thu bắt buộc (K01 – K11)
 
-| Mã ca | Người thực hiện | Thao tác / đầu vào | Kết quả mong đợi | Kết quả thực tế | Đạt? |
-|:-----:|-----------------|--------------------|------------------|-----------------|:----:|
-| **K01** | Thái Quang Huy | Qua `Room`, tính tiền phòng cho A101 và A102 | Lần lượt **1.200.000** và **2.100.000**; chạy hai phương thức override thực sự | _(điền)_ | ⬜ |
-| **K02** | Thái Quang Huy, Hồ Trương Anh Quân | Lập A101/2026-10: điện 100→150, nước 20→30 | Điện **150.000**, nước **150.000**, tổng **1.500.000**, trạng thái nợ | _(điền)_ | ⬜ |
-| **K03** | Thái Quang Huy, Hồ Trương Anh Quân | Lập A102/2026-10: điện 100→150, nước 20→30 | Tổng **2.400.000**; không nhân với số người hoặc sức chứa | _(điền)_ | ⬜ |
-| **K04** | Lê Thành Luân | Xếp QE210004 vào A101; sau đó thử xếp QE210001 vào A102 | Cả hai bị từ chối; A101 vẫn 2 người, A102 vẫn 1 người | _(điền)_ | ⬜ |
-| **K05** | Lê Thành Luân | QE210002 trả A101, sau đó xếp QE210004 vào A101 | A101 còn đúng 2 người: QE210001, QE210004; QE210002 chưa có phòng | _(điền)_ | ⬜ |
-| **K06** | Hồ Trương Anh Quân | Lập A101 với điện 150→100 hoặc nước đầu −1; thử tháng 2026-13 | Từng đầu vào bị từ chối; số hóa đơn không tăng | _(điền)_ | ⬜ |
-| **K07** | Hồ Trương Anh Quân | Lập hai lần cùng A101/2026-10 như K02 | Chỉ có 1 hóa đơn, tổng nợ **1.500.000**, không tạo bản sao | _(điền)_ | ⬜ |
-| **K08** | Nguyễn Đăng Huy | Tạo K02 và K03 rồi thanh toán hóa đơn A101; xác nhận trả lần nữa | Tổng nợ ban đầu **3.900.000**, sau trả còn nợ **2.400.000**; lần xác nhận lại không đổi tiền | _(điền)_ | ⬜ |
-| **K09** | Nguyễn Đăng Huy, Lê Trần Khải Nguyên | Tạo K02; đổi giá điện thành 4.000; lập A101/2026-11 với cùng chỉ số | Hóa đơn tháng 10 vẫn **1.500.000**; tháng 11 là **1.550.000** | _(điền)_ | ⬜ |
-| **K10** | Lê Trần Khải Nguyên | Tạo K02/K03, thanh toán hóa đơn A101, lưu, thoát hẳn rồi mở lại; lập hóa đơn hợp lệ cho tháng mới | Khôi phục đủ 2 loại phòng, 4 SV, phân phòng; trước khi lập thêm, A101 đã trả **1.500.000**, A102 nợ **2.400.000**; mã hóa đơn mới không trùng mã đã lưu | _(điền)_ | ⬜ |
-| **K11** | Hồ Trương Anh Quân | Lập A101/2026-10 với điện 100→100 và nước 20→20 | Điện/nước bằng **0**, tổng **1.200.000**; chấp nhận chỉ số đầu bằng cuối | _(điền)_ | ⬜ |
-
-### 4.3. Các ca bổ sung của nhóm (K12 – K15)
-
-> Đề yêu cầu nộp **tối thiểu 12 ca kiểm thử thực tế**, ngoài các ca nghiệm thu cần phủ thêm: đầu vào sai, mã trùng/không tồn tại, dữ liệu rỗng, thao tác thất bại không đổi trạng thái. Các ca dưới đây là đề xuất, nhóm có thể điều chỉnh.
-
-| Mã ca | Người thực hiện | Thao tác / đầu vào | Kết quả mong đợi | Kết quả thực tế | Đạt? |
-|:-----:|-----------------|--------------------|------------------|-----------------|:----:|
-| **K12** | _(phân công)_ | Thêm phòng với mã `A101` đã tồn tại; thêm sinh viên với MSSV `QE210001` đã tồn tại | Cả hai bị từ chối với thông báo trùng mã; danh sách phòng/sinh viên không đổi | _(điền)_ | ⬜ |
-| **K13** | _(phân công)_ | Nhập mã/họ tên rỗng, mã chứa khoảng trắng, sức chứa 0 hoặc 11 | Từng đầu vào bị từ chối kèm thông báo; không tạo đối tượng mới | _(điền)_ | ⬜ |
-| **K14** | _(phân công)_ | Xếp sinh viên không tồn tại (VD `QE999999`) vào A101; xếp QE210004 vào phòng không tồn tại (VD `Z999`); lập hóa đơn cho phòng chưa có người ở | Tất cả bị từ chối với thông báo rõ ràng; số người ở và số hóa đơn không đổi | _(điền)_ | ⬜ |
-| **K15** | _(phân công)_ | Làm hỏng file dữ liệu rồi khởi động lại chương trình | Báo lỗi đọc file; **không** âm thầm tạo dữ liệu rỗng và ghi đè file cũ | _(điền)_ | ⬜ |
-
-### 4.4. Cách ghi nhận kết quả
-
-Với mỗi ca, nhóm ghi lại: **dữ liệu đầu vào → kết quả mong đợi → kết quả thực tế → đạt / chưa đạt**. Với kịch bản nhiều bước, ghi trạng thái đầu và kết quả của từng bước. Các bảng trên là *kết quả mong đợi*; cột "Kết quả thực tế" và "Đạt?" phải được điền sau khi nhóm đã **thực sự chạy** chương trình (✅ Đạt / ❌ Chưa đạt).
+| Mã ca | Người thực hiện | Thao tác / đầu vào | Kết quả mong đợi |
+|:-----:|-----------------|--------------------|------------------|
+| **K01** | Thái Quang Huy | Qua `Room`, tính tiền phòng cho A101 và A102 | Lần lượt **1.200.000** và **2.100.000**; chạy hai phương thức override thực sự |
+| **K02** | Thái Quang Huy, Hồ Trương Anh Quân | Lập A101/2026-10: điện 100→150, nước 20→30 | Điện **150.000**, nước **150.000**, tổng **1.500.000**, trạng thái nợ |
+| **K03** | Thái Quang Huy, Hồ Trương Anh Quân | Lập A102/2026-10: điện 100→150, nước 20→30 | Tổng **2.400.000**; không nhân với số người hoặc sức chứa |
+| **K04** | Lê Thành Luân | Xếp QE210004 vào A101; sau đó thử xếp QE210001 vào A102 | Cả hai bị từ chối; A101 vẫn 2 người, A102 vẫn 1 người |
+| **K05** | Lê Thành Luân | QE210002 trả A101, sau đó xếp QE210004 vào A101 | A101 còn đúng 2 người: QE210001, QE210004; QE210002 chưa có phòng |
+| **K06** | Hồ Trương Anh Quân | Lập A101 với điện 150→100 hoặc nước đầu −1; thử tháng 2026-13 | Từng đầu vào bị từ chối; số hóa đơn không tăng |
+| **K07** | Hồ Trương Anh Quân | Lập hai lần cùng A101/2026-10 như K02 | Chỉ có 1 hóa đơn, tổng nợ **1.500.000**, không tạo bản sao |
+| **K08** | Nguyễn Đăng Huy | Tạo K02 và K03 rồi thanh toán hóa đơn A101; xác nhận trả lần nữa | Tổng nợ ban đầu **3.900.000**, sau trả còn nợ **2.400.000**; lần xác nhận lại không đổi tiền |
+| **K09** | Nguyễn Đăng Huy, Lê Trần Khải Nguyên | Tạo K02; đổi giá điện thành 4.000; lập A101/2026-11 với cùng chỉ số | Hóa đơn tháng 10 vẫn **1.500.000**; tháng 11 là **1.550.000** |
+| **K10** | Lê Trần Khải Nguyên | Tạo K02/K03, thanh toán hóa đơn A101, lưu, thoát hẳn rồi mở lại; lập hóa đơn hợp lệ cho tháng mới | Khôi phục đủ 2 loại phòng, 4 SV, phân phòng; trước khi lập thêm, A101 đã trả **1.500.000**, A102 nợ **2.400.000**; mã hóa đơn mới không trùng mã đã lưu |
+| **K11** | Hồ Trương Anh Quân | Lập A101/2026-10 với điện 100→100 và nước 20→20 | Điện/nước bằng **0**, tổng **1.200.000**; chấp nhận chỉ số đầu bằng cuối |
