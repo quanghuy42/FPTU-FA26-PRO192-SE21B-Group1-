@@ -1,4 +1,4 @@
-# FPTU-FA26-PRO192-SE21B-Group1-
+# FPTU-FA26-PRO192-SE21B-Group1
 ## 📖 1. Giới thiệu dự án
 
 **Dorm Utility Management System** là ứng dụng **Java console** hỗ trợ ban quản lý một khu ký túc xá nhỏ theo dõi sinh viên đang ở trong từng phòng và số tiền phải thu hằng tháng. Dự án được thực hiện trong khuôn khổ môn **PRO192 – lớp SE21B (FA26)**.
