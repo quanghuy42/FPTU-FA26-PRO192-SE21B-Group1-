@@ -267,14 +267,14 @@ QE210004|Phạm Dũng|NONE
 
 | # | Chức năng | Phụ trách | Trạng thái |
 |---|-----------|-----------|:----------:|
-| 1 | Thêm / xem danh sách phòng (thường, dịch vụ), tìm phòng theo mã | Thái Quang Huy | ⬜ |
-| 2 | Thêm sinh viên, tìm theo MSSV; xếp phòng / trả phòng | Lê Thành Luân | ⬜ |
-| 3 | Hiển thị sức chứa, số người ở, số chỗ trống của mỗi phòng | Lê Thành Luân | ⬜ |
-| 4 | Nhập chỉ số điện, nước và lập hóa đơn | Hồ Trương Anh Quân | ⬜ |
-| 5 | Xem chi tiết hóa đơn | Nguyễn Đăng Huy | ⬜ |
-| 6 | Thanh toán hóa đơn; liệt kê hóa đơn còn nợ và tổng nợ | Nguyễn Đăng Huy | ⬜ |
-| 7 | Cập nhật giá hiện hành (phòng / điện / nước) | Thái Quang Huy | ⬜ |
-| 8 | Lưu và đọc lại dữ liệu khi khởi động lại | Lê Trần Khải Nguyên | ⬜ |
+| 1 | Thêm / xem danh sách phòng (thường, dịch vụ), tìm phòng theo mã | Thái Quang Huy | ✅ |
+| 2 | Thêm sinh viên, tìm theo MSSV; xếp phòng / trả phòng | Lê Thành Luân | ✅ |
+| 3 | Hiển thị sức chứa, số người ở, số chỗ trống của mỗi phòng | Lê Thành Luân | ✅ |
+| 4 | Nhập chỉ số điện, nước và lập hóa đơn | Hồ Trương Anh Quân | ✅ |
+| 5 | Xem chi tiết hóa đơn | Nguyễn Đăng Huy | ✅ |
+| 6 | Thanh toán hóa đơn; liệt kê hóa đơn còn nợ và tổng nợ | Nguyễn Đăng Huy | ✅ |
+| 7 | Cập nhật giá hiện hành (phòng / điện / nước) | Thái Quang Huy | ✅ |
+| 8 | Lưu và đọc lại dữ liệu khi khởi động lại | Lê Trần Khải Nguyên | ✅ |
 
 ---
 
