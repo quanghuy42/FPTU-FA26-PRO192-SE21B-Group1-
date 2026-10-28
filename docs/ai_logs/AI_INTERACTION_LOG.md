@@ -7,13 +7,11 @@
 **Phạm vi:** Các tương tác AI liên quan trực tiếp đến mã nguồn, thiết kế
 kỹ thuật và kiểm thử.
 
-> Lưu ý: Nhật ký này ghi lại những hỗ trợ AI cho phần việc của Luân.
-> Luân cần tự đối chiếu mã nguồn thực tế, chạy kiểm thử trong project
-> nhóm và cập nhật kết quả đúng với những gì đã thực hiện trước khi nộp.
 
 ------------------------------------------------------------------------
 
 ## Mục #7
+
 
 -   **Ngày:** 2026-10-25
 -   **Người thực hiện:** Lê Thành Luân -- QE200043
@@ -123,9 +121,4 @@ kỹ thuật và kiểm thử.
 
 ------------------------------------------------------------------------
 
-## Xác nhận của thành viên
 
-Tôi chịu trách nhiệm đọc hiểu, kiểm tra và chỉnh sửa mã nguồn được hỗ
-trợ bởi AI trước khi tích hợp vào sản phẩm nhóm. Nhật ký chỉ được xác
-nhận là hoàn tất sau khi các bước kiểm tra nêu trên được thực hiện và
-kết quả được cập nhật trung thực.
