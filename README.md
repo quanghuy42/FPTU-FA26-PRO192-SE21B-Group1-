@@ -156,3 +156,147 @@ Mỗi ca bắt đầu từ bộ dữ liệu trên và giá mẫu, trừ khi ca m
 | **K09** | Nguyễn Đăng Huy, Lê Trần Khải Nguyên | Tạo K02; đổi giá điện thành 4.000; lập A101/2026-11 với cùng chỉ số | Hóa đơn tháng 10 vẫn **1.500.000**; tháng 11 là **1.550.000** |
 | **K10** | Lê Trần Khải Nguyên | Tạo K02/K03, thanh toán hóa đơn A101, lưu, thoát hẳn rồi mở lại; lập hóa đơn hợp lệ cho tháng mới | Khôi phục đủ 2 loại phòng, 4 SV, phân phòng; trước khi lập thêm, A101 đã trả **1.500.000**, A102 nợ **2.400.000**; mã hóa đơn mới không trùng mã đã lưu |
 | **K11** | Hồ Trương Anh Quân | Lập A101/2026-10 với điện 100→100 và nước 20→20 | Điện/nước bằng **0**, tổng **1.200.000**; chấp nhận chỉ số đầu bằng cuối |
+## 🚀 5. Hướng dẫn mở, build và chạy
+
+### 5.1. Yêu cầu môi trường
+
+| Thành phần | Phiên bản |
+|------------|-----------|
+| JDK | **1.8 (JDK 8)** |
+| IDE | **NetBeans 17** |
+| Thư viện | Chỉ dùng Java SE chuẩn, không cần cài thêm |
+
+### 5.2. Mở, build và chạy bằng NetBeans
+
+1. Clone repository về máy:
+   ```bash
+   git clone <URL-repository-cua-nhom>
+   ```
+2. Mở NetBeans 17 → **File → Open Project…** → chọn thư mục `PRO192Project` bên trong repository vừa clone.
+3. Kiểm tra project dùng Java 8: chuột phải vào project → **Properties → Sources**, mục *Source/Binary Format* chọn **JDK 8**. Mục **Libraries**, *Java Platform* chọn JDK 1.8.
+4. Chuột phải vào project → **Clean and Build** (phím tắt `Shift + F11`).
+5. Chuột phải vào project → **Run** (phím tắt `F6`) để chạy chương trình. Menu console sẽ hiện ở cửa sổ **Output**.
+
+### 5.3. Chạy bằng file JAR
+
+File JAR được tạo từ đúng bản mã nguồn đã nộp, đặt trong thư mục `release/`. Mở terminal tại thư mục `PRO192Project` và chạy:
+
+```bash
+java -jar ../release/PRO192Project.jar
+```
+
+> 📝 Chương trình đọc/ghi thư mục `data/` theo **đường dẫn tương đối** so với thư mục đang chạy lệnh, nên hãy chạy lệnh từ thư mục `PRO192Project` để dữ liệu nằm đúng chỗ. Khi chạy từ NetBeans, thư mục `data/` tự nằm trong thư mục project.
+
+### 5.4. Cấu trúc thư mục
+
+```text
+FPTU-FA26-PRO192-SE21B-Group1/
+├── PRO192Project/          # Project NetBeans
+│   ├── src/pro192project/  # Mã nguồn Java (Entities, Services, Storage, UI)
+│   └── data/               # File dữ liệu lưu cục bộ (xem mục 6)
+├── release/                # File JAR dùng để chạy
+├── docs/
+│   └── ai_logs/
+│       └── AI_INTERACTION_LOG.md   # Nhật ký sử dụng AI (xem mục 9)
+└── README.md
+```
+
+---
+
+## 💾 6. Dữ liệu mẫu & Lưu trữ dữ liệu
+
+### 6.1. Cách lưu: file văn bản UTF-8 trong thư mục `data/`
+
+Chương trình lưu dữ liệu bằng **file văn bản (text) mã hóa UTF-8**, mỗi đối tượng là một dòng, các trường ngăn cách bởi dấu `|`. Dữ liệu được chia thành 4 file:
+
+| File | Nội dung | Định dạng một dòng |
+|------|----------|--------------------|
+| `data/rooms.txt` | Danh sách phòng, kèm loại phòng | Phòng thường: `STANDARD\|mãPhòng\|sứcChứa\|tiềnPhòng`<br>Phòng dịch vụ: `SERVICE\|mãPhòng\|sứcChứa\|tiềnPhòng\|phíDịchVụ` |
+| `data/students.txt` | Sinh viên **và phòng đang ở** | `MSSV\|họTên\|mãPhòng` (chưa xếp phòng ghi `NONE`) |
+| `data/prices.txt` | Giá hiện hành (một dòng duy nhất) | `tiềnPhòngThường\|tiềnPhòngDịchVụ\|phíDịchVụ\|đơnGiáĐiện\|đơnGiáNước` |
+| `data/bills.txt` | Toàn bộ hóa đơn kèm bản chụp giá | `mãHĐ\|mãPhòng\|YYYY-MM\|điệnĐầu\|điệnCuối\|nướcĐầu\|nướcCuối\|loạiPhòng\|tiềnPhòng\|phíDịchVụ\|đơnGiáĐiện\|đơnGiáNước\|trạngThái` |
+
+- Trạng thái hóa đơn: `UNPAID` (còn nợ) hoặc `PAID` (đã thanh toán).
+- Thông tin **phân phòng** không có file riêng: nó nằm ở cột `mãPhòng` trong `students.txt`. Khi khởi động, chương trình đọc sinh viên rồi thêm mã sinh viên vào đúng phòng, nhờ vậy dữ liệu chỉ có một nơi duy nhất và không bị lệch nhau.
+- Tiền và chỉ số là số nguyên (đơn vị: **đồng**).
+
+### 6.2. Quy tắc đọc / ghi file
+
+| Tình huống | Cách xử lý |
+|------------|------------|
+| **Thời điểm lưu** | Lưu sau mỗi thao tác thành công (xếp/trả phòng, lập hóa đơn, thanh toán, đổi giá) và lưu lại khi thoát |
+| **Ghi file an toàn** | Ghi ra file tạm (ví dụ `rooms.txt.tmp`) rồi mới đổi tên đè lên file thật, nên nếu ghi lỗi giữa chừng thì file cũ vẫn còn nguyên |
+| **Ghi lỗi** | Báo rõ **chưa lưu được** và cho phép thử lại |
+| **File hỏng / sai định dạng** | Báo lỗi nêu rõ file và dòng bị sai, **không** âm thầm bắt đầu với dữ liệu rỗng và **không** ghi đè file cũ |
+| **Lần chạy đầu (chưa có file)** | Bắt đầu với dữ liệu rỗng hoặc nạp dữ liệu mẫu theo lựa chọn của người dùng |
+| **Đã có dữ liệu** | **Không** tự động nạp dữ liệu mẫu đè lên |
+| **Mã hóa đơn mới** | Lấy số lớn nhất đang có trong `bills.txt` cộng thêm 1 (`HD001`, `HD002`, …), nên sau khi mở lại, mã mới không trùng mã đã lưu |
+
+### 6.3. Dữ liệu mẫu (bộ dữ liệu khởi đầu)
+
+Có thể tạo thủ công các file sau trong thư mục `data/` để chạy thử đúng các ca nghiệm thu (hoặc chọn nạp dữ liệu mẫu ở lần chạy đầu).
+
+`data/rooms.txt`
+```text
+STANDARD|A101|2|1200000
+SERVICE|A102|3|1800000|300000
+```
+
+`data/students.txt`
+```text
+QE210001|Nguyễn An|A101
+QE210002|Trần Bình|A101
+QE210003|Lê Chi|A102
+QE210004|Phạm Dũng|NONE
+```
+
+`data/prices.txt`
+```text
+1200000|1800000|300000|3000|15000
+```
+
+`data/bills.txt` (để trống)
+
+Để **xóa dữ liệu và bắt đầu lại**, đóng chương trình rồi xóa các file trong thư mục `data/`.
+
+---
+
+## ✅ 7. Trạng thái chức năng
+
+> Cập nhật cột *Trạng thái* khi hoàn thành: ✅ Hoàn thành · 🚧 Đang làm · ⬜ Chưa làm
+
+| # | Chức năng | Phụ trách | Trạng thái |
+|---|-----------|-----------|:----------:|
+| 1 | Thêm / xem danh sách phòng (thường, dịch vụ), tìm phòng theo mã | Thái Quang Huy | ⬜ |
+| 2 | Thêm sinh viên, tìm theo MSSV; xếp phòng / trả phòng | Lê Thành Luân | ⬜ |
+| 3 | Hiển thị sức chứa, số người ở, số chỗ trống của mỗi phòng | Lê Thành Luân | ⬜ |
+| 4 | Nhập chỉ số điện, nước và lập hóa đơn | Hồ Trương Anh Quân | ⬜ |
+| 5 | Xem chi tiết hóa đơn | Nguyễn Đăng Huy | ⬜ |
+| 6 | Thanh toán hóa đơn; liệt kê hóa đơn còn nợ và tổng nợ | Nguyễn Đăng Huy | ⬜ |
+| 7 | Cập nhật giá hiện hành (phòng / điện / nước) | Thái Quang Huy | ⬜ |
+| 8 | Lưu và đọc lại dữ liệu khi khởi động lại | Lê Trần Khải Nguyên | ⬜ |
+
+---
+
+## ⚠️ 8. Giới hạn còn lại
+
+### 8.1. Giới hạn theo thiết kế (đúng phạm vi đề bài)
+
+- Hóa đơn đã lập **không sửa / xóa**; trả phòng không xóa hóa đơn hay khoản nợ cũ.
+- Không có chức năng xóa phòng hoặc xóa sinh viên.
+- Thanh toán chỉ trả **đủ một lần** cho một hóa đơn, không thanh toán từng phần.
+- Tiền phòng luôn tính trọn tháng, không tính theo ngày ở; tiền tính theo **phòng**, không chia theo từng sinh viên.
+- Giá điện, nước áp dụng tuyến tính, không lũy tiến.
+- Giao diện chỉ là console; không có GUI, web, cơ sở dữ liệu, đăng nhập, thanh toán trực tuyến hay gửi thông báo.
+
+### 8.2. Lỗi và hạn chế đã biết
+
+> 📝 *Nhóm điền vào sau khi kiểm thử xong. Nếu chưa phát hiện lỗi nào, ghi "Chưa phát hiện".*
+
+- (điền)
+
+---
+
+## 🤖 9. Minh bạch sử dụng AI
+
+Nhóm sử dụng AI theo kế hoạch học phần. Các lần hỗ trợ quan trọng (người thực hiện, công cụ, mục tiêu/prompt chính, phần đã kiểm tra và tự chỉnh sửa) được ghi tại [`docs/ai_logs/AI_INTERACTION_LOG.md`](docs/ai_logs/AI_INTERACTION_LOG.md). Mỗi thành viên chịu trách nhiệm hiểu phần code mình nộp.
