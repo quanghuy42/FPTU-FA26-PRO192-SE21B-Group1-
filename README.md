@@ -293,7 +293,7 @@ QE210004|Phạm Dũng|NONE
 
 > 📝 *Nhóm điền vào sau khi kiểm thử xong. Nếu chưa phát hiện lỗi nào, ghi "Chưa phát hiện".*
 
-- (điền)
+- Chưa phát hiện.
 
 ---
 
