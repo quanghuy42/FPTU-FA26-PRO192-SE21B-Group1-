@@ -2,7 +2,6 @@
 
 - **Tên dự án:** Dorm Utility Management System (Hệ thống Quản lý Ký túc xá & Tiền điện nước)
 - **Môn học:** PRO192 | **Lớp:** SE21B | **Nhóm:** Group 1
-- **Vị trí tài liệu:** `docs/ai_logs/AI_log_danghuy.md`
 
 ---
 
@@ -41,7 +40,7 @@ Theo yêu cầu đề bài môn học PRO192, việc sử dụng các công cụ
     - Tháng phải đúng định dạng `YYYY-MM` (Regex `^\\d{4}-(0[1-9]|1[0-2])$`).
     - Chỉ số điện/nước cuối phải lớn hơn hoặc bằng chỉ số đầu.
     - Tính duy nhất: không cho phép tạo 2 hóa đơn trùng cặp `roomId` và `billingMonth`.
-- **Link / trích đoạn:** (https://gemini.google.com/app/c73a338a21afdfcb)
+- **Link / trích đoạn:** (điền link chia sẻ cuộc trò chuyện)
 - **Phần đã kiểm tra:** Đối chiếu các điều kiện ràng buộc với yêu cầu của các ca kiểm thử K02, K03, K06, K07 trong tài liệu đặc tả đề bài môn học PRO192. (điền: ca nào đã thực sự chạy và kết quả)
 - **Phần đã tự chỉnh sửa:** Điều chỉnh các thông điệp ngoại lệ (Exception message) để thống nhất cách hiển thị tiếng Việt (có dấu/không dấu) với toàn bộ dự án.
 - **File bị ảnh hưởng:** `BillManager.java`, `PriceSnapshot.java`, `Bill.java`.
