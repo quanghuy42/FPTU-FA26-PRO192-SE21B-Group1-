@@ -1,0 +1,102 @@
+# NHẬT KÝ TƯƠNG TÁC VÀ SỬ DỤNG TRỢ LÝ AI (AI INTERACTION LOG)
+
+* Tên dự án: Dorm Utility Management System (Hệ thống Quản lý Ký túc xá & Tiền điện nước)
+* Môn học: PRO192 | Lớp: SE21B | Nhóm: Group 1
+
+## 1. Quy ước ghi nhật ký sử dụng AI
+
+Theo yêu cầu đề bài môn học PRO192, việc sử dụng các công cụ hỗ trợ bằng Trí tuệ Nhân tạo (GenAI) phải tuân thủ nghiêm ngặt các nguyên tắc sau:
+
+1. Trách nhiệm cá nhân: Mỗi thành viên tự ghi chép các lần mình sử dụng AI và tự commit/push lên repository từ tài khoản GitHub cá nhân tương ứng.
+2. Tính trung thực: Ghi nhận trung thực, đầy đủ mọi lần tương tác quan trọng có ảnh hưởng đến mã nguồn, bản thiết kế kỹ thuật hoặc kịch bản kiểm thử (test driver/test cases).
+3. Phạm vi ghi nhận: CHỈ ghi các tương tác liên quan trực tiếp đến CODE, THIẾT KẾ KỸ THUẬT, VÀ KIỂM THỬ. Không ghi các nội dung phụ trợ như viết README chung chung hay các hướng dẫn thao tác cơ bản về Git/GitHub/SourceTree.
+4. Nắm vững mã nguồn:Công cụ AI chỉ đóng vai trò trợ lý/cố vấn. Mỗi thành viên phải tự kiểm tra, thẩm định, hiểu tường tận toàn bộ mã nguồn mình nộp và chịu trách nhiệm giải trình trước giảng viên khi được vấn đáp.
+5. Bảo mật thông tin: Tuyệt đối không lưu trữ email cá nhân, token, mật khẩu hay dữ liệu nhạy cảm vào nhật ký.
+
+## 2. Bảng tổng hợp các lần tương tác AI
+
+| #   | Ngày       | Người thực hiện                  | Công cụ AI | Mục tiêu chính                                                                 | File / Phần ảnh hưởng                          |
+| --- | ---------- | -------------------------------- | ---------- | ------------------------------------------------------------------------------ | ---------------------------------------------- |
+| #1  | 2026-10-26 | Lê Trần Khải Nguyên - QE210233   | Grok       | Định hướng thiết kế & quy trình kiểm tra dữ liệu cho phần Lưu/đọc file, nối quan hệ sau load, K09 & K10 | FileStorage / DataManager, bills.txt, students.txt, rooms.txt |
+| #2  | 2026-10-26 | Lê Trần Khải Nguyên - QE210233   | Grok       | Khắc phục lỗi cannot find symbol và Unclosed group do nhãn tham số NetBeans chèn vào mã | Các file liên quan Storage & Main              |
+| #3  | 2026-10-26 | Lê Trần Khải Nguyên - QE210233   | Grok       | Chỉ ra điểm quan trọng trong K09 và cách phối hợp thực hiện với Nguyễn Đăng Huy | Bill (PriceSnapshot), logic lưu/đọc hóa đơn    |
+| #4  | 2026-10-27 | Lê Trần Khải Nguyên - QE210233   | Grok       | Xây dựng test driver nhập liệu bằng Scanner và sửa lỗi vẫn in [THANH CONG] sau khi bắt ngoại lệ | Main.java (Test Driver) / các hàm test         |
+
+## 3. Chi tiết từng lần tương tác
+
+### Mục #1
+- **Ngày:** 2026-10-26
+- **Người thực hiện:** Lê Trần Khải Nguyên – QE210233
+- **Công cụ AI:** Grok (xAI)
+- **Mục tiêu:** Định hướng thiết kế tầng Storage/DAO (lưu/đọc 4 file text), logic nối quan hệ Room–Student sau khi load, và quy trình kiểm tra dữ liệu cho các ca K09, K10.
+- **Prompt chính:** "Định hướng thiết kế & quy trình kiểm tra dữ liệu cho phần việc cho Lê Trần Khải Nguyên"
+- **Kết quả AI đưa ra:**
+  - Phân rõ trách nhiệm: load/save 4 file (`rooms.txt`, `students.txt`, `prices.txt`, `bills.txt`), nối quan hệ sau load, sinh mã hóa đơn mới không trùng.
+  - Quy tắc ghi file an toàn (ghi file tạm → rename).
+  - Thứ tự load bắt buộc và checklist kiểm tra sau load (sức chứa, phân phòng, snapshot, tổng nợ…).
+  - Chi tiết cách chạy K09 (Price Snapshot) và K10 (save → thoát → mở lại).
+- **Link / trích đoạn:** https://grok.com/share/bGVnYWN5_e19c5ab8-a352-432b-b02e-81e7cafe0b25
+- **Phần đã kiểm tra:** Đối chiếu với yêu cầu đề bài về định dạng file, Price Snapshot, và các ca K09, K10. Xác nhận logic nối quan hệ Room–Student không để lệch dữ liệu.
+- **Phần đã tự chỉnh sửa:** Điều chỉnh tên class/method cho khớp với code thực tế của nhóm; bổ sung xử lý trường hợp file không tồn tại ở lần chạy đầu.
+- **File bị ảnh hưởng:** FileStorage/DataManager (hoặc tên tương đương), logic load/save, phần nối quan hệ sau đọc file.
+
+### Mục #2
+- **Ngày:** 2026-10-26
+- **Người thực hiện:** Lê Trần Khải Nguyên – QE210233
+- **Công cụ AI:** Grok (xAI)
+- **Mục tiêu:** Khắc phục lỗi biên dịch `cannot find symbol` và `Unclosed group` do NetBeans chèn nhãn tham số vào mã nguồn.
+- **Prompt chính:** "Khắc phục lỗi cannot find symbol và Unclosed group do nhãn tham số NetBeans chèn vào mã"
+- **Kết quả AI đưa ra:**
+  - Nguyên nhân: NetBeans Parameter Name Hints bị copy nhầm vào source (ví dụ `String mssv`, `(YYYY-MM)` trong regex).
+  - Cách sửa: tìm và xóa toàn bộ nhãn thừa; chuẩn hóa lại biểu thức chính quy; Clean and Build lại.
+  - Khuyến nghị tắt Parameter Name Hints để tránh tái phát.
+- **Link / trích đoạn:** https://grok.com/share/bGVnYWN5_e19c5ab8-a352-432b-b02e-81e7cafe0b25
+- **Phần đã kiểm tra:** Clean and Build trên NetBeans 17 thành công, không còn lỗi `cannot find symbol` và `Unclosed group`.
+- **Phần đã tự chỉnh sửa:** Xóa thủ công các chuỗi nhãn tham số bị chèn; kiểm tra lại các đoạn regex liên quan đến tháng và định dạng file.
+- **File bị ảnh hưởng:** Các file Storage/DAO và Main có sử dụng Scanner hoặc Pattern.
+
+### Mục #3
+- **Ngày:** 2026-10-26
+- **Người thực hiện:** Lê Trần Khải Nguyên – QE210233
+- **Công cụ AI:** Grok (xAI)
+- **Mục tiêu:** Nắm rõ điểm quan trọng của ca K09 (Price Snapshot) và cách phối hợp thực hiện với Nguyễn Đăng Huy.
+- **Prompt chính:** "chỉ ra điểm quan trọng trong K09 , thực hiện nhiệm vụ với đăng huy"
+- **Kết quả AI đưa ra:**
+  - Mục tiêu K09: chứng minh hóa đơn cũ không bị ảnh hưởng khi đổi giá điện.
+  - Công thức tháng 11 sau khi đổi giá điện = 1.550.000; tháng 10 vẫn giữ 1.500.000.
+  - Phân công: Đăng Huy phụ trách xem chi tiết hóa đơn + tổng nợ; Khải Nguyên đảm bảo snapshot được lưu/đọc đúng và dữ liệu giữ nguyên sau load.
+  - Quy trình phối hợp từng bước từ tạo K02 → đổi giá → lập tháng 11 → lưu → mở lại.
+- **Link / trích đoạn:**https://grok.com/share/bGVnYWN5_e19c5ab8-a352-432b-b02e-81e7cafe0b25
+- **Phần đã kiểm tra:** Đối chiếu kết quả mong đợi của K09 với công thức tính tiền và yêu cầu Price Snapshot trong đề bài.
+- **Phần đã tự chỉnh sửa:** Thống nhất cách lấy tiền từ snapshot bên trong Bill (không tính lại bằng giá hiện hành) khi viết phần load/save.
+- **File bị ảnh hưởng:** Logic lưu/đọc `bills.txt`, xử lý PriceSnapshot, phần hỗ trợ xem hóa đơn sau load.
+
+### Mục #4
+- **Ngày:** 2026-10-27
+- **Người thực hiện:** Lê Trần Khải Nguyên – QE210233
+- **Công cụ AI:** Grok (xAI)
+- **Mục tiêu:** Xây dựng test driver nhập liệu bằng Scanner và sửa lỗi chương trình vẫn in `[THANH CONG]` sau khi đã bắt ngoại lệ.
+- **Prompt chính:** "Xây dựng test driver nhập liệu bằng Scanner và sửa lỗi vẫn in [THANH CONG] sau khi bắt ngoại lệ"
+- **Kết quả AI đưa ra:**
+  - Nguyên nhân lỗi: câu lệnh in `[THANH CONG]` nằm ngoài khối `try`, nên vẫn chạy sau `catch`.
+  - Cách sửa: đặt lời gọi nghiệp vụ và câu in thành công **bên trong** cùng khối `try`.
+  - Cung cấp skeleton Test Driver hoàn chỉnh (menu, các hàm testCreateBill, testUpdateElectricPrice, testViewBill) kèm quy tắc ném exception từ tầng Service.
+- **Link / trích đoạn:** https://grok.com/share/bGVnYWN5_e19c5ab8-a352-432b-b02e-81e7cafe0b25
+- **Phần đã kiểm tra:** Chạy thử các input sai (tháng không hợp lệ, chỉ số cuối < đầu, phòng trống…). Kết quả chỉ còn `[LOI]`, không còn in nhầm `[THANH CONG]`.
+- **Phần đã tự chỉnh sửa:** Điều chỉnh thông báo lỗi cho thống nhất với phần còn lại của dự án; tích hợp skeleton vào Main/Test Driver thực tế của nhóm.
+- **File bị ảnh hưởng:** Main.java (Test Driver) và các phương thức test liên quan đến lập hóa đơn / đổi giá.
+
+## 4. Mẫu nhật ký (Template dành cho các thành viên bổ sung)
+
+Khi bất kỳ thành viên nào trong nhóm sử dụng AI để hỗ trợ công việc liên quan đến mã nguồn hoặc kiểm thử, hãy copy biểu mẫu dưới đây, điền đầy đủ thông tin và dán tiếp vào cuối tài liệu này:
+### Mục #<Số thứ tự>
+- **Ngày:** YYYY-MM-DD
+- **Người thực hiện:** <Họ tên và> – <MSSV>
+- **Công cụ AI:** <Tên & 3.5 Antigravity ChatGPT Claude GPT-4o, Phiên Sonnet, bản/Model, công cụ dụ: ví>
+- **Mục tiêu:** <Mục AI cần cụ giải quyết thể tiêu>
+- **Prompt chính:** <Câu AI cho chính cầu gửi lệnh/yêu>
+- **Kết quả AI đưa ra:** <Tóm AI gì hồi/sinh mã/gợi những phản tắt ý đã>
+- **Link / trích đoạn:** <Link chia cuộc hoặc hội prompt quan sẻ thoại trích trọng đoạn>
+- **Phần đã kiểm tra:** <Cách AI bạn code của do kiểm sinh thức tra tính đúng đắn>
+- **Phần đã tự chỉnh sửa:** <Những AI bạn của gốc hồi lại phản so sửa tay tự với điểm>
+- **File bị ảnh hưởng:** <Danh bị các file hoặc mới project sách thay trong tạo đổi>
