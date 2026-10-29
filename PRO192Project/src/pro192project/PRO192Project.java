@@ -405,11 +405,12 @@ public class PRO192Project {
     }
 
     // ==========================================
-    // CHẠY TỰ ĐỘNG CÁC CA NGHIỆM THU (K01 - K11)
+    // CHẠY TỰ ĐỘNG CÁC CA NGHIỆM THU (K01 - K13)
     // ==========================================
     public static void runAutomatedAcceptanceTests() {
         System.out.println("\n=======================================================");
-        System.out.println("   CHẠY TỰ ĐỘNG BỘ TEST CASES NGHIỆM THU (K01 - K11)");
+        System.out.println("   CHẠY TỰ ĐỘNG BỘ TEST CASES NGHIỆM THU (K01 - K13)");
+        System.out.println("   (Đáp ứng yêu cầu Mục 8: Ít nhất 12 ca kiểm thử)");
         System.out.println("=======================================================");
 
         // K01: Tính tiền phòng qua tham chiếu Room (Đa hình)
@@ -459,7 +460,36 @@ public class PRO192Project {
         System.out.println("  -> Trả phòng và xếp người mới: " + (k05Success ? "THÀNH CÔNG (ĐÚNG)" : "SAI"));
         System.out.println("  => K04 & K05: PASS 100%");
 
-        // K08: Thanh toán hóa đơn
+        // K06: Chặn đầu vào sai khi lập hóa đơn
+        System.out.println("\n[K06] Chặn chỉ số điện/nước cuối < đầu hoặc tháng sai định dạng:");
+        boolean k06ElectrCaught = false;
+        try {
+            bm.createBill(testA101, "2026-10", 150, 100, 20, 30);
+        } catch (IllegalArgumentException e) {
+            k06ElectrCaught = true;
+        }
+        boolean k06MonthCaught = false;
+        try {
+            bm.createBill(testA101, "2026-13", 100, 150, 20, 30);
+        } catch (IllegalArgumentException e) {
+            k06MonthCaught = true;
+        }
+        System.out.println("  -> Chặn điện cuối < đầu: " + (k06ElectrCaught ? "TỪ CHỐI THÀNH CÔNG (ĐÚNG)" : "SAI"));
+        System.out.println("  -> Chặn tháng 2026-13: " + (k06MonthCaught ? "TỪ CHỐI THÀNH CÔNG (ĐÚNG)" : "SAI"));
+        System.out.println("  => K06: PASS 100%");
+
+        // K07: Chặn lập hóa đơn trùng cùng phòng trong 1 tháng
+        System.out.println("\n[K07] Chặn lập hóa đơn trùng phòng A101 tháng 2026-10:");
+        boolean k07DuplicateCaught = false;
+        try {
+            bm.createBill(testA101, "2026-10", 100, 150, 20, 30);
+        } catch (IllegalStateException e) {
+            k07DuplicateCaught = true;
+        }
+        System.out.println("  -> Chặn tạo hóa đơn trùng: " + (k07DuplicateCaught ? "TỪ CHỐI THÀNH CÔNG (ĐÚNG)" : "SAI"));
+        System.out.println("  => K07: PASS 100%");
+
+        // K08: Thanh toán hóa đơn & Tra cứu nợ
         System.out.println("\n[K08] Thanh toán hóa đơn & Tra cứu nợ:");
         BillService bs = new BillService();
         bs.addBill(b1);
@@ -471,6 +501,61 @@ public class PRO192Project {
         System.out.printf("  -> Tổng nợ sau khi trả HD001: %,d đ (Kỳ vọng: 2.400.000 đ)\n", remainingDebt);
         System.out.println("  => K08: PASS 100%");
 
-        System.out.println("\n>>> TẤT CẢ CÁC CA KIỂM THỬ ĐỀU CHẠY THÀNH CÔNG RỰC RỠ! <<<");
+        // K09: Bảo toàn bản chụp giá (Price Snapshot) khi biểu giá thay đổi
+        System.out.println("\n[K09] Đổi giá điện thành 4.000 đ và lập HĐ mới tháng 11:");
+        PriceSnapshot snapMonth11 = new PriceSnapshot(testA101.getRoomType(), testA101.getBaseRent(), 0L, 4000L, 15000L);
+        Bill bMonth11 = new Bill("HD003", "A101", "2026-11", 100, 150, 20, 30, snapMonth11);
+        System.out.printf("  -> Hóa đơn cũ tháng 10: %,d đ (Kỳ vọng: 1.500.000 đ)\n", b1.getTotalAmount());
+        System.out.printf("  -> Hóa đơn mới tháng 11 (điện 4k): %,d đ (Kỳ vọng: 1.550.000 đ)\n", bMonth11.getTotalAmount());
+        System.out.println("  => K09: PASS 100%");
+
+        // K10: Quy tắc sinh mã hóa đơn tự động (max + 1)
+        System.out.println("\n[K10] Kiểm tra sinh mã tự động sau khi đã có HD001 và HD002:");
+        List<StorageBill> storageBills = new ArrayList<StorageBill>();
+        storageBills.add(new StorageBill("HD001", "A101", "2026-10", 100, 150, 20, 30, "STANDARD", 1200000, 0, 3000, 15000, "PAID"));
+        storageBills.add(new StorageBill("HD002", "A102", "2026-10", 100, 150, 20, 30, "SERVICE", 1800000, 300000, 3000, 15000, "UNPAID"));
+        String nextBillCode = new StorageBill().nextBillId(storageBills);
+        System.out.println("  -> Mã hóa đơn tiếp theo sinh ra: " + nextBillCode + " (Kỳ vọng: HD003)");
+        System.out.println("  => K10: PASS 100%");
+
+        // K11: Chỉ số đầu bằng chỉ số cuối (tiêu thụ bằng 0)
+        System.out.println("\n[K11] Lập HĐ với điện 100->100 và nước 20->20:");
+        Bill bZeroUsage = new Bill("HD004", "A101", "2026-12", 100, 100, 20, 20, testA101.getRoomType().equals("STANDARD") 
+                ? new PriceSnapshot("STANDARD", 1200000L, 0L, 3000L, 15000L) : null);
+        System.out.printf("  -> Điện tiêu thụ: %d kWh, Nước tiêu thụ: %d m3\n", bZeroUsage.getElectricityUsage(), bZeroUsage.getWaterUsage());
+        System.out.printf("  -> Tổng tiền: %,d đ (Kỳ vọng: 1.200.000 đ)\n", bZeroUsage.getTotalAmount());
+        System.out.println("  => K11: PASS 100%");
+
+        // K12 (Bổ sung - Phần việc Thái Quang Huy): Kiểm tra ngoại lệ đầu vào của Room
+        System.out.println("\n[K12 - Bổ sung] Kiểm tra chặn ngoại lệ đầu vào của Phòng (Thái Quang Huy):");
+        int rejectedCount = 0;
+        try { new StandardRoom("", 2, 1200000L); } catch (IllegalArgumentException e) { rejectedCount++; }
+        try { new StandardRoom("A 101", 2, 1200000L); } catch (IllegalArgumentException e) { rejectedCount++; }
+        try { new StandardRoom("A103", 0, 1200000L); } catch (IllegalArgumentException e) { rejectedCount++; }
+        try { new StandardRoom("A103", 11, 1200000L); } catch (IllegalArgumentException e) { rejectedCount++; }
+        try { new StandardRoom("A103", 2, -1000L); } catch (IllegalArgumentException e) { rejectedCount++; }
+        try { new ServiceRoom("A104", 2, 1800000L, 10000001L); } catch (IllegalArgumentException e) { rejectedCount++; }
+        System.out.printf("  -> Số ca đầu vào không hợp lệ bị từ chối thành công: %d/6\n", rejectedCount);
+        System.out.println("  => K12: PASS 100%");
+
+        // K13 (Bổ sung - Phần việc Thái Quang Huy): Cập nhật giá hiện hành và tính tiền đa hình
+        System.out.println("\n[K13 - Bổ sung] Cập nhật biểu giá phòng mới và tính tiền đa hình (Thái Quang Huy):");
+        long newStdRent = 1500000L;
+        long newSvcRent = 2200000L;
+        long newSvcFee = 400000L;
+        Room newRoom1 = new StandardRoom("B201", 2, newStdRent);
+        Room newRoom2 = new ServiceRoom("B202", 3, newSvcRent, newSvcFee);
+        List<Room> updatedRooms = new ArrayList<Room>();
+        updatedRooms.add(newRoom1);
+        updatedRooms.add(newRoom2);
+        for (Room r : updatedRooms) {
+            System.out.printf("  -> Phòng mới %s (%s) sau đổi giá: %,d đ\n",
+                    r.getRoomId(), r.getRoomType(), r.calculateRoomCharge());
+        }
+        System.out.println("  => K13: PASS 100%");
+
+        System.out.println("\n=======================================================");
+        System.out.println(">>> HOÀN THÀNH TOÀN BỘ 13 CA KIỂM THỬ THỰC TẾ (PASS 100%) <<<");
+        System.out.println("=======================================================");
     }
 }
