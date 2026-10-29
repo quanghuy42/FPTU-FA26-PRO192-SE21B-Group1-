@@ -293,12 +293,12 @@ Theo yêu cầu đề bài môn học PRO192, việc sử dụng các công cụ
 - **Ngày:** 2026-10-29
 - **Người thực hiện:** Thái Quang Huy – QS190001
 - **Công cụ AI:** Gemini (Antigravity Assistant)
-- **Mục tiêu:** Xây dựng bộ script kiểm thử tự động và cô lập từng chức năng thuộc task của Thành viên 1 (Mô hình phòng, kiểm tra biên dữ liệu, tính tiền đa hình, quản lý cư dân và cập nhật giá).
-- **Prompt chính:** "Làm cho tui scripts để chạy kiểm thử từng chức năng ở task của tui"
-- **Kết quả AI đưa ra:** Tạo bộ kiểm thử module `Member1TestRunner.java` với 5 bài test chuyên sâu cùng 2 kịch bản thực thi nhanh `test_member1.bat` và `test_member1.ps1`, hỗ trợ cả chế độ menu tương tác lẫn dòng lệnh.
-- **Phần đã kiểm tra:** Chạy trực tiếp qua CMD và PowerShell, toàn bộ 5 bài test (bao gồm 12 ca kiểm tra biên, 5 ca đa hình, 7 ca cư dân, 4 ca biểu giá và 4 ca mô phỏng menu) đều đạt PASS 100%.
-- **Phần đã tự chỉnh sửa:** Tích hợp tùy chọn chạy lẻ từng bài hoặc chạy toàn bộ một lúc.
-- **File bị ảnh hưởng:** `Member1TestRunner.java`, `test_member1.bat`, `test_member1.ps1`, `docs/ai_logs/AI_INTERACTION_LOG.md`.
+- **Mục tiêu:** Xây dựng kịch bản hướng dẫn chi tiết kiểm thử thủ công (manual testing) từng chức năng thuộc task của Thành viên 1 trên console (Thêm phòng thường/dịch vụ, kiểm tra ràng buộc nhập liệu, tính tiền đa hình, và cập nhật biểu giá).
+- **Prompt chính:** "hướng dẫn tui tự chạy thử thủ công đó, xóa cái script bạn vừa tạo đi"
+- **Kết quả AI đưa ra:** Xóa các script phụ trợ, cung cấp kịch bản từng bước với dữ liệu nhập mẫu chuẩn xác, kết quả kỳ vọng và các ca biên ngoại lệ trực tiếp qua giao diện dòng lệnh.
+- **Phần đã kiểm tra:** Chạy thử ứng dụng `PRO192Project` qua NetBeans / dòng lệnh, thực hiện đúng các bước theo kịch bản.
+- **Phần đã tự chỉnh sửa:** Tự tay thao tác kiểm thử thủ công từng menu để thẩm định hệ thống.
+- **File bị ảnh hưởng:** `docs/ai_logs/AI_INTERACTION_LOG.md`.
 
 ---
 
