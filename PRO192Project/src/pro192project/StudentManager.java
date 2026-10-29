@@ -1,5 +1,5 @@
 
-package com.mycompany.pro192project;
+package pro192project;
 
 
 import java.util.ArrayList;

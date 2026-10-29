@@ -76,6 +76,22 @@ public abstract class Room {
         return this.residentIds.remove(studentId);
     }
     
+    public boolean addStudent(String studentId){
+        return this.addResident(studentId);
+    }
+    
+    public boolean removeStudent(String studentId){
+        return this.removeResident(studentId);
+    }
+    
+    public int getCurrentOccupancy(){
+        return this.getResidentCount();
+    }
+    
+    public int getAvailableSlots(){
+        return this.getVacancy();
+    }
+    
     public List<String> getResidentIds(){
         return new ArrayList<String>(this.residentIds);
     }
