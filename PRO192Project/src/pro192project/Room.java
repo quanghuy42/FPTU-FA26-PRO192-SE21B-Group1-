@@ -121,7 +121,7 @@ public abstract class Room {
 
     @Override
     public String toString() {
-        return String.format("%s | %s | Suc chua: %d | dang o: %d | Trong: %d | Tien phong/thang: %,d VND",
+        return String.format("%s | %s | Capacity: %d | Occupied: %d | Vacant: %d | Rent/month: %,d VND",
                 this.roomId, this.getRoomType(), this.capacity,
                 this.getResidentCount(), this.getVacancy(), this.calculateRoomCharge());
     }  

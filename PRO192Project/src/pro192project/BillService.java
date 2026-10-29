@@ -39,27 +39,27 @@ public class BillService {
         Bill targetBill = findBillById(billId);
 
         if (targetBill == null) {
-            System.out.println("Không tìm thấy hóa đơn với mã: " + billId);
+            System.out.println("Bill not found with ID: " + billId);
             return;
         }
 
-        System.out.println("\n========== CHI TIẾT HÓA ĐƠN: " + targetBill.getBillId() + " ==========");
-        System.out.println("Mã phòng: " + targetBill.getRoomId());
-        System.out.println("Tháng hóa đơn: " + targetBill.getBillingMonth());
+        System.out.println("\n========== BILL DETAILS: " + targetBill.getBillId() + " ==========");
+        System.out.println("Room ID: " + targetBill.getRoomId());
+        System.out.println("Billing Month: " + targetBill.getBillingMonth());
         System.out.println("---------------------------------------------------------");
-        System.out.printf("Tiền phòng: %,d đ\n", targetBill.getPriceSnapshot().getRoomPrice());
+        System.out.printf("Room Charge: %,d VND\n", targetBill.getPriceSnapshot().getRoomPrice());
         
         if ("SERVICE".equalsIgnoreCase(targetBill.getPriceSnapshot().getRoomType())) {
-            System.out.printf("Phí dịch vụ: %,d đ\n", targetBill.getPriceSnapshot().getServiceFee());
+            System.out.printf("Service Fee: %,d VND\n", targetBill.getPriceSnapshot().getServiceFee());
         }
         
-        System.out.printf("Tiêu thụ điện: %d kWh -> Thành tiền: %,d đ\n",
+        System.out.printf("Electricity Usage: %d kWh -> Amount: %,d VND\n",
                 targetBill.getElectricityUsage(), targetBill.getElectricityCost());
-        System.out.printf("Tiêu thụ nước: %d m³ -> Thành tiền: %,d đ\n",
+        System.out.printf("Water Usage: %d m3 -> Amount: %,d VND\n",
                 targetBill.getWaterUsage(), targetBill.getWaterCost());
         System.out.println("---------------------------------------------------------");
-        System.out.printf("TỔNG TIỀN HÓA ĐƠN: %,d đ\n", targetBill.getTotalAmount());
-        System.out.println("Trạng thái: " + (targetBill.isPaid() ? "ĐÃ THANH TOÁN (PAID)" : "CÒN NỢ (UNPAID)"));
+        System.out.printf("TOTAL BILL AMOUNT: %,d VND\n", targetBill.getTotalAmount());
+        System.out.println("Status: " + (targetBill.isPaid() ? "PAID" : "UNPAID"));
         System.out.println("=========================================================");
     }
 
@@ -67,24 +67,24 @@ public class BillService {
         Bill targetBill = findBillById(billId);
 
         if (targetBill == null) {
-            System.out.println("Không tìm thấy hóa đơn với mã: " + billId);
+            System.out.println("Bill not found with ID: " + billId);
             return false;
         }
 
         if (targetBill.isPaid()) {
-            System.out.println("Hóa đơn này đã được thanh toán trước đó rồi! Không thu thêm tiền.");
+            System.out.println("This bill has already been paid! No additional payment collected.");
             return false;
         } else {
             targetBill.markAsPaid();
-            System.out.printf("Thanh toán thành công cho hóa đơn %s với số tiền %,d đ.\n", 
+            System.out.printf("Payment successful for bill %s with amount %,d VND.\n", 
                     targetBill.getBillId(), targetBill.getTotalAmount());
             return true;
         }
     }
 
     public void listUnpaidBillsAndTotalDebt() {
-        System.out.println("\n================== DANH SÁCH HÓA ĐƠN CÒN NỢ ==================");
-        System.out.printf("%-10s | %-10s | %-10s | %s\n", "Mã HĐ", "Mã Phòng", "Tháng", "Số tiền nợ (đ)");
+        System.out.println("\n================== LIST OF UNPAID BILLS ==================");
+        System.out.printf("%-10s | %-10s | %-10s | %s\n", "Bill ID", "Room ID", "Month", "Unpaid Amount (VND)");
         System.out.println("------------------------------------------------------------");
 
         long totalDebt = 0;
@@ -102,10 +102,10 @@ public class BillService {
 
         System.out.println("------------------------------------------------------------");
         if (count == 0) {
-            System.out.println("Tuyệt vời! Không có hóa đơn nào đang còn nợ.");
+            System.out.println("Great! There are no unpaid bills.");
         } else {
-            System.out.printf("Tổng số hóa đơn còn nợ: %d\n", count);
-            System.out.printf("TỔNG CỘNG TIỀN NỢ: %,d đ\n", totalDebt);
+            System.out.printf("Total unpaid bills: %d\n", count);
+            System.out.printf("TOTAL DEBT AMOUNT: %,d VND\n", totalDebt);
         }
         System.out.println("=============================================================");
     }

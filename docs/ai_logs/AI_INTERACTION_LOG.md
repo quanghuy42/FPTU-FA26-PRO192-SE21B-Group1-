@@ -276,6 +276,19 @@ Theo yêu cầu đề bài môn học PRO192, việc sử dụng các công cụ
 
 ---
 
+### Mục #19
+- **Ngày:** 2026-10-29
+- **Người thực hiện:** Thái Quang Huy – QS190001
+- **Công cụ AI:** Gemini (Antigravity Assistant)
+- **Mục tiêu:** Chuyển toàn bộ các chuỗi dữ liệu in ấn (`System.out.print`, `System.out.println`, `System.out.printf`, `toString()`) trong giao diện console và bộ kiểm thử sang tiếng Anh chuẩn để chuyên nghiệp hóa và đáp ứng tiêu chuẩn đồ án.
+- **Prompt chính:** "Chuyển các dữ liệu print từ tiếng việt sang tiếng anh hết cho tui"
+- **Kết quả AI đưa ra:** Dịch toàn diện các chuỗi hiển thị menu chính (chức năng 0-9), các câu nhắc nhập liệu, thông báo kết quả, chi tiết hóa đơn, bảng danh sách công nợ và toàn bộ 13 ca kiểm thử tự động (K01 - K13) sang tiếng Anh.
+- **Phần đã kiểm tra:** Biên dịch bằng `javac -source 1.8 -target 1.8` thành công 100%, chạy toàn bộ test runner và kiểm thử giao diện bằng CLI chạy chuẩn xác.
+- **Phần đã tự chỉnh sửa:** Giữ nguyên các định dạng số tiền VND, cấu trúc định dạng lưu trữ file và logic nghiệp vụ.
+- **File bị ảnh hưởng:** `PRO192Project.java`, `BillService.java`, `Room.java`.
+
+---
+
 ## 4. Mẫu nhật ký (Template dành cho các thành viên bổ sung)
 
 ```markdown
