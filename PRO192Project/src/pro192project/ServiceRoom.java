@@ -1,10 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package pro192project;
 
 /**
+ * Service dormitory room with additional service fee.
  *
  * @author Thái Quang Huy
  */
@@ -13,28 +10,27 @@ public class ServiceRoom extends Room {
 
     public ServiceRoom(String roomId, int capacity, long baseRent, long serviceFee) {
         super(roomId, capacity, baseRent);
-        Room.validateMoney(serviceFee, "Phi dich vu");
+        Room.validateMoney(serviceFee, "Service fee");
         this.serviceFee = serviceFee;
     }
-    
+
     @Override
-    public long calculateRoomCharge(){
+    public long calculateRoomCharge() {
         return super.getBaseRent() + this.serviceFee;
     }
-    
+
     @Override
-    public String getRoomType(){
+    public String getRoomType() {
         return "SERVICE";
     }
-    
+
     @Override
-    public long getServiceFee(){
+    public long getServiceFee() {
         return this.serviceFee;
     }
-    
-    public void setServiceFee(long serviceFee){
-        Room.validateMoney(serviceFee, "Phi dich vu");
+
+    public void setServiceFee(long serviceFee) {
+        Room.validateMoney(serviceFee, "Service fee");
         this.serviceFee = serviceFee;
     }
-    
 }
