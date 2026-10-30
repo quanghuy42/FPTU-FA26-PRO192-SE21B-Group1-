@@ -9,17 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-/**
- * ỨNG DỤNG QUẢN LÝ KÝ TÚC XÁ & TIỆN ÍCH (DORM UTILITY MANAGEMENT SYSTEM)
- * Lớp SE21B - Nhóm 1 (Group 1) - Môn PRO192
- * 
- * Tích hợp toàn diện các module của 5 thành viên:
- * - Thành viên 1 (Thái Quang Huy - QS190001): Mô hình phòng, tính tiền phòng đa hình, giá mẫu
- * - Thành viên 2 (Lê Thành Luân - QE200043): Quản lý hồ sơ sinh viên, xếp/trả phòng, sức chứa
- * - Thành viên 3 (Hồ Trương Anh Quân - QE210067): Nhập chỉ số, kiểm tra nghiệp vụ và lập hóa đơn
- * - Thành viên 4 (Nguyễn Đăng Huy - QE210182): Thanh toán hóa đơn, tra cứu, liệt kê nợ & tính tổng nợ
- * - Thành viên 5 (Lê Trần Khải Nguyên - QE210233): Đọc / ghi an toàn hệ thống file văn bản UTF-8
- */
 public class PRO192Project {
 
     // Relative data storage directory (adapts whether run from NetBeans or root project)
@@ -30,10 +19,18 @@ public class PRO192Project {
         return Paths.get("data");
     }
 
-    private static Path getRoomsFile() { return getDataDir().resolve("rooms.txt"); }
-    private static Path getStudentsFile() { return getDataDir().resolve("students.txt"); }
-    private static Path getPricesFile() { return getDataDir().resolve("prices.txt"); }
-    private static Path getBillsFile() { return getDataDir().resolve("bills.txt"); }
+    private static Path getRoomsFile() { 
+        return getDataDir().resolve("rooms.txt"); 
+    }
+    private static Path getStudentsFile() { 
+        return getDataDir().resolve("students.txt"); 
+    }
+    private static Path getPricesFile() { 
+        return getDataDir().resolve("prices.txt"); 
+    }
+    private static Path getBillsFile() { 
+        return getDataDir().resolve("bills.txt"); 
+    }
 
     // In-memory data
     private static Map<String, Room> rooms = new HashMap<String, Room>();
