@@ -77,7 +77,7 @@ GUI, web, cơ sở dữ liệu, đăng nhập, thanh toán trực tuyến, gửi
 
 | STT | MSSV | Họ và tên | Vai trò & Phần việc phụ trách | Ca kiểm thử (Test Cases) |
 |:---:|:----:|-----------|-------------------------------|:------------------------:|
-| 1 | `QS190001` | Thái Quang Huy | Hai loại phòng, tính tiền đa hình, cập nhật giá hiện hành | K01, K02, K03 |
+| 1 | `QS190001` | Thái Quang Huy | Hai loại phòng, tính tiền đa hình, cập nhật giá hiện hành | K01, K02, K03, K12, K13 |
 | 2 | `QE200043` | Lê Thành Luân | Hồ sơ sinh viên, xếp/trả phòng, kiểm tra trùng chỗ & sức chứa | K04, K05 |
 | 3 | `QE210067` | Hồ Trương Anh Quân | Nhập chỉ số/tháng, lập hóa đơn và bản chụp giá (Snapshot) | K02, K03, K06, K07, K11 |
 | 4 | `QE210182` | Nguyễn Đăng Huy | Thanh toán, tra cứu hóa đơn, danh sách và tính tổng nợ | K08, K09 |
@@ -156,6 +156,8 @@ Mỗi ca bắt đầu từ bộ dữ liệu trên và giá mẫu, trừ khi ca m
 | **K09** | Nguyễn Đăng Huy, Lê Trần Khải Nguyên | Tạo K02; đổi giá điện thành 4.000; lập A101/2026-11 với cùng chỉ số | Hóa đơn tháng 10 vẫn **1.500.000**; tháng 11 là **1.550.000** |
 | **K10** | Lê Trần Khải Nguyên | Tạo K02/K03, thanh toán hóa đơn A101, lưu, thoát hẳn rồi mở lại; lập hóa đơn hợp lệ cho tháng mới | Khôi phục đủ 2 loại phòng, 4 SV, phân phòng; trước khi lập thêm, A101 đã trả **1.500.000**, A102 nợ **2.400.000**; mã hóa đơn mới không trùng mã đã lưu |
 | **K11** | Hồ Trương Anh Quân | Lập A101/2026-10 với điện 100→100 và nước 20→20 | Điện/nước bằng **0**, tổng **1.200.000**; chấp nhận chỉ số đầu bằng cuối |
+| **K12** | Thái Quang Huy | Thử tạo phòng với mã rỗng, mã có khoảng trắng, sức chứa < 1 hoặc > 10, tiền âm, tiền > 10.000.000 | Từng trường hợp ném `IllegalArgumentException` từ chối hợp lệ, không tạo phòng lỗi (đạt 6/6 ca ngoại lệ) |
+| **K13** | Thái Quang Huy | Đổi giá hiện hành (phòng thường 1.500.000, dịch vụ 2.200.000 + phí DV 400.000), tạo phòng mới B201 và B202, tính tiền đa hình qua `Room` | B201 tính đúng **1.500.000**, B202 tính đúng **2.600.000**; đa hình hoạt động chính xác với biểu giá mới |
 ## 🚀 5. Hướng dẫn mở, build và chạy
 
 ### 5.1. Yêu cầu môi trường
