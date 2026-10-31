@@ -15,7 +15,6 @@ public class StudentManager {
         this.rooms = rooms;
     }
 
-    // Add student
     public boolean addStudent(String id, String name) {
         if (findStudent(id) != null) {
             return false;
@@ -29,7 +28,6 @@ public class StudentManager {
         }
     }
 
-    // Find student by ID
     public Student findStudent(String id) {
         if (id == null) {
             return null;
@@ -43,7 +41,6 @@ public class StudentManager {
         return null;
     }
 
-    // Assign student to room
     public boolean assignStudentToRoom(
             String studentId, String roomId) {
 
@@ -66,7 +63,6 @@ public class StudentManager {
         return false;
     }
 
-    // Check out student
     public boolean checkOutStudent(String studentId) {
 
         Student student = findStudent(studentId);
@@ -89,7 +85,6 @@ public class StudentManager {
         return false;
     }
 
-    // Display room capacity
     public void displayRoomCapacity() {
 
         for (Room room : rooms.values()) {
@@ -103,7 +98,6 @@ public class StudentManager {
         }
     }
 
-    // Display all students
     public void displayStudents() {
 
         for (Student student : students) {

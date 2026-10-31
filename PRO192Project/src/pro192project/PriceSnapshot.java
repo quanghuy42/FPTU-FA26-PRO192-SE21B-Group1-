@@ -1,9 +1,5 @@
 package pro192project;
 
-/**
- * PriceSnapshot - Bản chụp đơn giá tại thời điểm lập hóa đơn
- * @author Nguyễn Đăng Huy, Hồ Trương Anh Quân
- */
 public class PriceSnapshot {
     private String roomType;
     private long roomPrice;

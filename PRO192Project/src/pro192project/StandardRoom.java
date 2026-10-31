@@ -1,10 +1,5 @@
 package pro192project;
 
-/**
- * Standard dormitory room with base rent and no service fee.
- *
- * @author Thái Quang Huy
- */
 public class StandardRoom extends Room {
 
     public StandardRoom(String roomId, int capacity, long baseRent) {

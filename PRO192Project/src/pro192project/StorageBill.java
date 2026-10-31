@@ -20,7 +20,7 @@ import java.util.Set;
 public class StorageBill {
     private String id;
     private String roomId;
-    private String month;        // YYYY-MM
+    private String month;
     private long electricStart;
     private long electricEnd;
     private long waterStart;
@@ -51,7 +51,6 @@ public class StorageBill {
         this.status = status;
     }
 
-    // Constructor rá»—ng: chá»‰ dĂ¹ng Ä‘á»ƒ gá»i save()/load()/nextBillId()
     public StorageBill() {
         this("", "", "", 0, 0, 0, 0, "STANDARD", 0, 0, 0, 0, "UNPAID");
     }
@@ -75,7 +74,6 @@ public class StorageBill {
     public long getElectricRate() { return this.electricRate; }
     public long getWaterRate() { return this.waterRate; }
 
-    // Tá»•ng = tiá»n phĂ²ng + phĂ­ dá»‹ch vá»¥ + tiá»n Ä‘iá»‡n + tiá»n nÆ°á»›c (theo giĂ¡ Ä‘Ă£ chá»¥p)
     public long getTotal() {
         return this.roomCharge + this.serviceFee
                 + getElectricUsage() * this.electricRate
@@ -90,7 +88,6 @@ public class StorageBill {
                 + this.electricRate + "|" + this.waterRate + "|" + this.status;
     }
 
-    // MĂ£ hĂ³a Ä‘Æ¡n má»›i = sá»‘ lá»›n nháº¥t Ä‘ang cĂ³ + 1 (HD001, HD002, ...)
     public String nextBillId(List<StorageBill> bills) {
         long max = 0;
         for (StorageBill b : bills) {
@@ -102,14 +99,13 @@ public class StorageBill {
                         max = n;
                     }
                 } catch (NumberFormatException e) {
-                    // bá» qua mĂ£ khĂ´ng theo dáº¡ng HDxxx
+                    
                 }
             }
         }
         return String.format("HD%03d", max + 1);
     }
 
-    // ===== LÆ¯U =====
     public void save(List<StorageBill> list, Path file) throws IOException {
         List<String> lines = new ArrayList<>();
         for (StorageBill b : list) {
@@ -124,7 +120,6 @@ public class StorageBill {
         Files.move(tmp, file, StandardCopyOption.REPLACE_EXISTING);
     }
 
-    // ===== Äá»ŒC =====
     public List<StorageBill> load(Path file) throws IOException {
         List<StorageBill> result = new ArrayList<>();
         if (!Files.exists(file)) {

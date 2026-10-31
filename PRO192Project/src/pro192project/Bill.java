@@ -1,9 +1,5 @@
 package pro192project;
 
-/**
- * Bill - Thực thể Hóa đơn tiền phòng và điện nước
- * @author Nguyễn Đăng Huy, Hồ Trương Anh Quân
- */
 public class Bill {
     private String billId;
     private String roomId;

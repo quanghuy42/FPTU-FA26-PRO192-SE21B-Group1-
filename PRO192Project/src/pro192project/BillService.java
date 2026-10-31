@@ -3,10 +3,6 @@ package pro192project;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * BillService - Quản lý và xử lý nghiệp vụ hóa đơn
- * @author Nguyễn Đăng Huy
- */
 public class BillService {
     private List<Bill> billList;
 

@@ -31,7 +31,6 @@ public class StoragePrice {
         this.waterRate = waterRate;
     }
 
-    // Constructor rá»—ng: chá»‰ dĂ¹ng Ä‘á»ƒ gá»i save()/load()
     public StoragePrice() {
         this(0, 0, 0, 0, 0);
     }
@@ -47,7 +46,6 @@ public class StoragePrice {
                 + "|" + this.electricRate + "|" + this.waterRate;
     }
 
-    // ===== LÆ¯U (file chá»‰ cĂ³ Ä‘Ăºng má»™t dĂ²ng) =====
     public void save(StoragePrice price, Path file) throws IOException {
         List<String> lines = new ArrayList<>();
         lines.add(price.toLine());
@@ -60,7 +58,6 @@ public class StoragePrice {
         Files.move(tmp, file, StandardCopyOption.REPLACE_EXISTING);
     }
 
-    // ===== Äá»ŒC =====  (tráº£ vá» null náº¿u chÆ°a cĂ³ file)
     public StoragePrice load(Path file) throws IOException {
         if (!Files.exists(file)) {
             return null;

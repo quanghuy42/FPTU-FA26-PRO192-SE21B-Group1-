@@ -8,10 +8,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * BillManager - Nghiệp vụ kiểm tra chỉ số và lập hóa đơn
- * @author Hồ Trương Anh Quân
- */
 public class BillManager {
     private static final int MAX_METER_READING = 1_000_000;
     private static final DateTimeFormatter BILLING_MONTH_FORMAT =
@@ -63,7 +59,6 @@ public class BillManager {
             throw new IllegalStateException("Tien phong va phi dich vu khong duoc am.");
         }
 
-        // Tạo bản chụp giá với đơn giá điện 3000, nước 15000 mặc định theo bảng giá mẫu
         PriceSnapshot snapshot = new PriceSnapshot(room.getRoomType(), room.getBaseRent(), serviceFee, 3000L, 15000L);
         Bill bill = new Bill(roomId, billingMonth, snapshot, electricityStart, electricityEnd, waterStart, waterEnd);
         

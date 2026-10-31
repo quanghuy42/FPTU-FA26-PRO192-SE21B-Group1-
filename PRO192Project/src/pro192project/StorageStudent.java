@@ -28,7 +28,6 @@ public class StorageStudent {
         this.roomId = roomId;
     }
 
-    // Constructor rá»—ng: chá»‰ dĂ¹ng Ä‘á»ƒ gá»i save()/load()
     public StorageStudent() {
         this("", "", null);
     }
@@ -37,13 +36,11 @@ public class StorageStudent {
     public String getName() { return this.name; }
     public String getRoomId() { return this.roomId; }
 
-    // Biáº¿n Ä‘á»‘i tÆ°á»£ng thĂ nh má»™t dĂ²ng chá»¯
     public String toLine() {
         String room = (this.roomId == null) ? "NONE" : this.roomId;
         return this.id + "|" + this.name + "|" + room;
     }
 
-    // ===== LÆ¯U =====
     public void save(List<StorageStudent> list, Path file) throws IOException {
         List<String> lines = new ArrayList<>();
         for (StorageStudent s : list) {
@@ -55,15 +52,13 @@ public class StorageStudent {
         }
         Path tmp = file.resolveSibling(file.getFileName() + ".tmp");
         Files.write(tmp, lines, StandardCharsets.UTF_8);
-        // Ghi xong háº¿t má»›i Ä‘Ă¨ file tháº­t -> lá»—i giá»¯a chá»«ng thĂ¬ file cÅ© váº«n cĂ²n nguyĂªn
         Files.move(tmp, file, StandardCopyOption.REPLACE_EXISTING);
     }
 
-    // ===== Äá»ŒC =====
     public List<StorageStudent> load(Path file) throws IOException {
         List<StorageStudent> result = new ArrayList<>();
         if (!Files.exists(file)) {
-            return result; // láº§n cháº¡y Ä‘áº§u: chÆ°a cĂ³ file thĂ¬ danh sĂ¡ch rá»—ng
+            return result;
         }
         Set<String> seen = new HashSet<>();
         List<String> lines = Files.readAllLines(file, StandardCharsets.UTF_8);

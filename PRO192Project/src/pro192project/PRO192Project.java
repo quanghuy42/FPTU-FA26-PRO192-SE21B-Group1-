@@ -11,7 +11,6 @@ import java.util.Scanner;
 
 public class PRO192Project {
 
-    // Relative data storage directory (adapts whether run from NetBeans or root project)
     private static Path getDataDir() {
         if (java.nio.file.Files.exists(Paths.get("PRO192Project", "data"))) {
             return Paths.get("PRO192Project", "data");
@@ -32,13 +31,11 @@ public class PRO192Project {
         return getDataDir().resolve("bills.txt"); 
     }
 
-    // In-memory data
     private static Map<String, Room> rooms = new HashMap<String, Room>();
     private static StudentManager studentManager = new StudentManager(rooms);
     private static BillService billService = new BillService();
     private static BillManager billManager = new BillManager();
 
-    // Current price rates (VND)
     private static long currentStandardRent = 1200000L;
     private static long currentServiceRent = 1800000L;
     private static long currentServiceFee = 300000L;
@@ -46,7 +43,6 @@ public class PRO192Project {
     private static long currentWaterRate = 15000L;
 
     public static void main(String[] args) {
-        // Automatically load data from data/ directory if present
         loadAllData();
 
         Scanner scanner = new Scanner(System.in);
@@ -111,9 +107,6 @@ public class PRO192Project {
         }
     }
 
-    // ==========================================
-    // CONSOLE UI HANDLERS
-    // ==========================================
 
     private static void handleRoomMenu(Scanner scanner) {
         System.out.println("\n--- CURRENT ROOM LIST ---");
@@ -227,10 +220,8 @@ public class PRO192Project {
             System.out.print("Enter final water reading: ");
             long wEnd = Long.parseLong(scanner.nextLine().trim());
 
-            // Create bill and validate business rules
             Bill bill = billManager.createBill(r, month, eStart, eEnd, wStart, wEnd);
 
-            // Generate automatic bill ID HDxxx
             StorageBill sb = new StorageBill();
             List<StorageBill> currentList = new ArrayList<StorageBill>();
             for (Bill b : billService.getBillList()) {
@@ -296,13 +287,9 @@ public class PRO192Project {
         }
     }
 
-    // ==========================================
-    // DATA PERSISTENCE (IO)
-    // ==========================================
 
     public static void loadAllData() {
         try {
-            // 1. Load rooms
             StorageRoom sr = new StorageRoom();
             List<StorageRoom> sRooms = sr.load(getRoomsFile());
             rooms.clear();
@@ -314,7 +301,6 @@ public class PRO192Project {
                 }
             }
 
-            // 2. Load prices
             StoragePrice sp = new StoragePrice();
             StoragePrice loadedPrice = sp.load(getPricesFile());
             if (loadedPrice.getStandardRoom() > 0) {
@@ -325,7 +311,6 @@ public class PRO192Project {
                 currentWaterRate = loadedPrice.getWaterRate();
             }
 
-            // 3. Load students & link to rooms
             StorageStudent ss = new StorageStudent();
             List<StorageStudent> sStudents = ss.load(getStudentsFile());
             studentManager = new StudentManager(rooms);
@@ -343,7 +328,6 @@ public class PRO192Project {
                 }
             }
 
-            // 4. Load bills
             StorageBill sb = new StorageBill();
             List<StorageBill> sBills = sb.load(getBillsFile());
             billService = new BillService();
@@ -364,7 +348,6 @@ public class PRO192Project {
 
     public static void saveAllDataSafely() {
         try {
-            // 1. Save rooms
             List<StorageRoom> sRoomList = new ArrayList<StorageRoom>();
             for (Room r : rooms.values()) {
                 sRoomList.add(new StorageRoom(r.getRoomType(), r.getRoomId(), r.getCapacity(),
@@ -372,12 +355,10 @@ public class PRO192Project {
             }
             new StorageRoom().save(sRoomList, getRoomsFile());
 
-            // 2. Save prices
             StoragePrice sp = new StoragePrice(currentStandardRent, currentServiceRent, currentServiceFee,
                     currentElectricityRate, currentWaterRate);
             sp.save(sp, getPricesFile());
 
-            // 3. Save students
             List<StorageStudent> sStudentList = new ArrayList<StorageStudent>();
             for (Student s : studentManager.getStudents()) {
                 String rId = s.isAssigned() ? s.getCurrentRoomId() : "NONE";
@@ -385,7 +366,6 @@ public class PRO192Project {
             }
             new StorageStudent().save(sStudentList, getStudentsFile());
 
-            // 4. Save bills
             List<StorageBill> sBillList = new ArrayList<StorageBill>();
             for (Bill b : billService.getBillList()) {
                 sBillList.add(new StorageBill(b.getBillId(), b.getRoomId(), b.getBillingMonth(),
@@ -401,16 +381,12 @@ public class PRO192Project {
         }
     }
 
-    // ==========================================
-    // AUTOMATED ACCEPTANCE TEST SUITE (K01 - K13)
-    // ==========================================
     public static void runAutomatedAcceptanceTests() {
         System.out.println("\n=======================================================");
         System.out.println("   RUNNING AUTOMATED ACCEPTANCE TEST SUITE (K01 - K13)");
         System.out.println("   (Satisfying Section 8 requirements: At least 12 test cases)");
         System.out.println("=======================================================");
 
-        // K01: Polymorphic room charge calculation via Room reference
         System.out.println("\n[K01] Polymorphic room charge calculation via Room reference:");
         Room testA101 = new StandardRoom("A101", 2, 1200000L);
         Room testA102 = new ServiceRoom("A102", 3, 1800000L, 300000L);
@@ -424,7 +400,6 @@ public class PRO192Project {
         }
         System.out.println("  => K01: PASS 100%");
 
-        // K02 & K03: Create bills and calculate total amounts
         System.out.println("\n[K02 & K03] Create bills for A101 and A102 (electric 100->150, water 20->30):");
         testA101.addResident("QE210001");
         testA102.addResident("QE210003");
@@ -438,7 +413,6 @@ public class PRO192Project {
         System.out.printf("  -> A102 (HD002): %,d VND (Expected: 2,400,000 VND)\n", b2.getTotalAmount());
         System.out.println("  => K02 & K03: PASS 100%");
 
-        // K04 & K05: Room capacity & Assign / Checkout student
         System.out.println("\n[K04 & K05] Room capacity & Assign / Checkout student:");
         Map<String, Room> mRooms = new HashMap<String, Room>();
         mRooms.put("A101", new StandardRoom("A101", 2, 1200000L));
@@ -457,7 +431,6 @@ public class PRO192Project {
         System.out.println("  -> Checkout student and assign new student: " + (k05Success ? "SUCCESS (CORRECT)" : "FAILED"));
         System.out.println("  => K04 & K05: PASS 100%");
 
-        // K06: Reject final reading < initial reading or invalid month format
         System.out.println("\n[K06] Reject final reading < initial reading or invalid month format:");
         boolean k06ElectrCaught = false;
         try {
@@ -475,7 +448,6 @@ public class PRO192Project {
         System.out.println("  -> Reject month 2026-13: " + (k06MonthCaught ? "REJECTED SUCCESSFULLY (CORRECT)" : "FAILED"));
         System.out.println("  => K06: PASS 100%");
 
-        // K07: Prevent duplicate bill for the same room in the same month
         System.out.println("\n[K07] Prevent duplicate bill for room A101 in month 2026-10:");
         boolean k07DuplicateCaught = false;
         try {
@@ -486,7 +458,6 @@ public class PRO192Project {
         System.out.println("  -> Prevent duplicate bill: " + (k07DuplicateCaught ? "REJECTED SUCCESSFULLY (CORRECT)" : "FAILED"));
         System.out.println("  => K07: PASS 100%");
 
-        // K08: Pay bill & Debt inquiry
         System.out.println("\n[K08] Pay bill & Debt inquiry:");
         BillService bs = new BillService();
         bs.addBill(b1);
@@ -498,7 +469,6 @@ public class PRO192Project {
         System.out.printf("  -> Total debt after paying HD001: %,d VND (Expected: 2,400,000 VND)\n", remainingDebt);
         System.out.println("  => K08: PASS 100%");
 
-        // K09: Update electricity rate to 4,000 VND and create bill for month 11
         System.out.println("\n[K09] Update electricity rate to 4,000 VND and create bill for month 11:");
         PriceSnapshot snapMonth11 = new PriceSnapshot(testA101.getRoomType(), testA101.getBaseRent(), 0L, 4000L, 15000L);
         Bill bMonth11 = new Bill("HD003", "A101", "2026-11", 100, 150, 20, 30, snapMonth11);
@@ -506,7 +476,6 @@ public class PRO192Project {
         System.out.printf("  -> New bill month 11 (4k electricity): %,d VND (Expected: 1,550,000 VND)\n", bMonth11.getTotalAmount());
         System.out.println("  => K09: PASS 100%");
 
-        // K10: Auto-increment bill ID after HD001 and HD002
         System.out.println("\n[K10] Auto-increment bill ID after HD001 and HD002:");
         List<StorageBill> storageBills = new ArrayList<StorageBill>();
         storageBills.add(new StorageBill("HD001", "A101", "2026-10", 100, 150, 20, 30, "STANDARD", 1200000, 0, 3000, 15000, "PAID"));
@@ -515,7 +484,6 @@ public class PRO192Project {
         System.out.println("  -> Next generated bill code: " + nextBillCode + " (Expected: HD003)");
         System.out.println("  => K10: PASS 100%");
 
-        // K11: Create bill with electricity 100->100 and water 20->20
         System.out.println("\n[K11] Create bill with electricity 100->100 and water 20->20:");
         Bill bZeroUsage = new Bill("HD004", "A101", "2026-12", 100, 100, 20, 20, testA101.getRoomType().equals("STANDARD") 
                 ? new PriceSnapshot("STANDARD", 1200000L, 0L, 3000L, 15000L) : null);
@@ -523,7 +491,6 @@ public class PRO192Project {
         System.out.printf("  -> Total amount: %,d VND (Expected: 1,200,000 VND)\n", bZeroUsage.getTotalAmount());
         System.out.println("  => K11: PASS 100%");
 
-        // K12 (Supplement - Thai Quang Huy): Validate input exceptions for Room
         System.out.println("\n[K12 - Supplement] Validate input exceptions for Room (Thai Quang Huy):");
         int rejectedCount = 0;
         try { new StandardRoom("", 2, 1200000L); } catch (IllegalArgumentException e) { rejectedCount++; }
@@ -535,7 +502,6 @@ public class PRO192Project {
         System.out.printf("  -> Number of invalid input cases successfully rejected: %d/6\n", rejectedCount);
         System.out.println("  => K12: PASS 100%");
 
-        // K13 (Supplement - Thai Quang Huy): Update room rates and calculate polymorphic room charges
         System.out.println("\n[K13 - Supplement] Update room rates and calculate polymorphic room charges (Thai Quang Huy):");
         long newStdRent = 1500000L;
         long newSvcRent = 2200000L;

@@ -23,7 +23,7 @@ public class StorageRoom {
     private String id;
     private int capacity;
     private long roomCharge;
-    private long serviceFee; // phĂ²ng thÆ°á»ng = 0
+    private long serviceFee;
 
     public StorageRoom(String type, String id, int capacity, long roomCharge, long serviceFee) {
         this.type = type;
@@ -33,7 +33,6 @@ public class StorageRoom {
         this.serviceFee = serviceFee;
     }
 
-    // Constructor rá»—ng: chá»‰ dĂ¹ng Ä‘á»ƒ gá»i save()/load()
     public StorageRoom() {
         this("STANDARD", "", 1, 0, 0);
     }
@@ -44,7 +43,6 @@ public class StorageRoom {
     public long getRoomCharge() { return this.roomCharge; }
     public long getServiceFee() { return this.serviceFee; }
 
-    // Tiá»n phĂ²ng má»™t thĂ¡ng (Ä‘Ă£ gá»“m phĂ­ dá»‹ch vá»¥ náº¿u cĂ³)
     public long calculateRoomCharge() {
         return this.roomCharge + this.serviceFee;
     }
@@ -57,7 +55,6 @@ public class StorageRoom {
         return "STANDARD|" + this.id + "|" + this.capacity + "|" + this.roomCharge;
     }
 
-    // ===== LÆ¯U =====
     public void save(List<StorageRoom> list, Path file) throws IOException {
         List<String> lines = new ArrayList<>();
         for (StorageRoom r : list) {
@@ -72,7 +69,6 @@ public class StorageRoom {
         Files.move(tmp, file, StandardCopyOption.REPLACE_EXISTING);
     }
 
-    // ===== Äá»ŒC =====
     public List<StorageRoom> load(Path file) throws IOException {
         List<StorageRoom> result = new ArrayList<>();
         if (!Files.exists(file)) {

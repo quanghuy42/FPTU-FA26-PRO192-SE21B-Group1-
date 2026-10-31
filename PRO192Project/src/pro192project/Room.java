@@ -3,11 +3,6 @@ package pro192project;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Abstract class representing a dormitory room.
- *
- * @author Thái Quang Huy
- */
 public abstract class Room {
     private String roomId;
     private int capacity;
@@ -24,25 +19,10 @@ public abstract class Room {
         this.residentIds = new ArrayList<String>();
     }
 
-    /**
-     * Calculates the total monthly room charge.
-     *
-     * @return monthly room charge in VND
-     */
     public abstract long calculateRoomCharge();
 
-    /**
-     * Gets the room type identifier.
-     *
-     * @return room type
-     */
     public abstract String getRoomType();
 
-    /**
-     * Gets the monthly service fee.
-     *
-     * @return service fee in VND
-     */
     public abstract long getServiceFee();
 
     public String getRoomId() {
