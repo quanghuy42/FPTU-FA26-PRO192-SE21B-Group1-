@@ -2,11 +2,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.pro192_project;
+package pro192project;
 
 /**
+ * Quản lý đơn giá hiện hành của ký túc xá.
+ * Giá mặc định:
+ * - Phòng thường: 1.200.000 đ/tháng
+ * - Phòng dịch vụ: 1.800.000 đ/tháng, phí dịch vụ: 300.000 đ/tháng
+ * - Điện: 3.000 đ/kWh, Nước: 15.000 đ/m3
  *
- * @author LOQ
+ * @author Thái Quang Huy
  */
 public class PriceConfig {
     private long standardRoomRent;
@@ -15,7 +20,7 @@ public class PriceConfig {
     private long electricRate;
     private long waterRate;
     
-    public PriceConfig(){
+    public PriceConfig() {
         this.standardRoomRent = 1200000L;
         this.serviceRoomRent = 1800000L;
         this.serviceFee = 300000L;
@@ -82,7 +87,4 @@ public class PriceConfig {
         Room.validateMoney(waterRate, "Water rate");
         this.waterRate = waterRate;
     }
-    
-    
-    
 }
