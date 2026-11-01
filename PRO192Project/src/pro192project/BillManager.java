@@ -1,87 +1,76 @@
 package pro192project;
 
-import java.time.YearMonth;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.ArrayList;
 
 public class BillManager {
-    private static final int MAX_METER_READING = 1_000_000;
-    private static final DateTimeFormatter BILLING_MONTH_FORMAT =
-            DateTimeFormatter.ofPattern("uuuu-MM");
+    private ArrayList<Bill> bills = new ArrayList<Bill>();
 
-    private final Map<String, Set<String>> billedMonthsByRoom = new HashMap<>();
-
-    public Bill createBill(Room room, String billingMonth,
-                           int electricityStart, int electricityEnd,
-                           int waterStart, int waterEnd) {
+    public Bill createBill(Room room, String month,
+            long electricStart, long electricEnd,
+            long waterStart, long waterEnd) {
         if (room == null) {
-            throw new IllegalArgumentException("Loi: Doi tuong phong khong ton tai!");
+            System.out.println("Loi: Doi tuong phong khong ton tai!");
+            return null;
+        }
+
+        if (room.getCurrentOccupancy() <= 0) {
+            System.out.println("Loi nghiep vu: Phong nay hien dang trong, khong the lap hoa don!");
+            return null;
+        }
+
+        if (!isValidBillingMonth(month)) {
+            System.out.println("Loi dinh dang: Thang lap hoa don phai theo dang YYYY-MM.");
+        }
+
+        if (electricStart < 0 || electricEnd < 0
+                || electricStart > 1000000 || electricEnd > 1000000) {
+            System.out.println("Chi so dien phai tu 0 den 1000000.");
+            return null;
+        }
+        if (waterStart < 0 || waterEnd < 0
+                || waterStart > 1000000 || waterEnd > 1000000) {
+            System.out.println("Chi so nuoc phai tu 0 den 1000000.");
+            return null;
+        }
+
+        if (electricEnd < electricStart) {
+            System.out.println("Loi nhap du lieu: Chi so dien cuoi khong duoc nho hon chi so dau!");
+            return null;
+        }
+        if (waterEnd < waterStart) {
+            System.out.println("Loi nhap du lieu: Chi so nuoc cuoi khong duoc nho hon chi so dau!");
+            return null;
         }
 
         String roomId = room.getRoomId();
-        Room.validateRoomId(roomId);
-        if (room.getResidentCount() <= 0) {
-            throw new IllegalStateException(
-                    "Loi nghiep vu: Phong nay hien dang trong (khong co nguoi o), khong the lap hoa don!");
+        for (Bill oldBill : bills) {
+            if (oldBill.getRoomId().equalsIgnoreCase(roomId)
+                    && oldBill.getBillingMonth().equals(month)) {
+                System.out.println("Loi trung lap: Phong nay da co hoa don trong thang " + month + "!");
+                return null;
+            }
         }
-        if (!isValidBillingMonth(billingMonth)) {
-            throw new IllegalArgumentException(
-                    "Loi dinh dang: Thang lap hoa don phai theo dinh dang YYYY-MM (Vi du: 2026-06).");
-        }
-
-        validateMeterReading(electricityStart, "Chi so dien dau");
-        validateMeterReading(electricityEnd, "Chi so dien cuoi");
-        validateMeterReading(waterStart, "Chi so nuoc dau");
-        validateMeterReading(waterEnd, "Chi so nuoc cuoi");
-
-        if (electricityEnd < electricityStart) {
-            throw new IllegalArgumentException(
-                    "Loi nhap du lieu: Chi so dien cuoi khong duoc nho hon chi so dau!");
-        }
-        if (waterEnd < waterStart) {
-            throw new IllegalArgumentException(
-                    "Loi nhap du lieu: Chi so nuoc cuoi khong duoc nho hon chi so dau!");
-        }
-
-        Set<String> billedMonths = billedMonthsByRoom.get(roomId);
-        if (billedMonths != null && billedMonths.contains(billingMonth)) {
-            throw new IllegalStateException(
-                    "Loi trung lap: Phong nay da co hoa don trong thang " + billingMonth + "!");
-        }
-
-        long roomCharge = room.calculateRoomCharge();
-        long serviceFee = room.getServiceFee();
-        if (roomCharge < 0 || serviceFee < 0) {
-            throw new IllegalStateException("Tien phong va phi dich vu khong duoc am.");
-        }
-
-        PriceSnapshot snapshot = new PriceSnapshot(roomCharge, serviceFee);
-        Bill bill = new Bill(roomId, billingMonth, snapshot, electricityStart,
-                electricityEnd, waterStart, waterEnd);
-        billedMonthsByRoom.computeIfAbsent(roomId, key -> new HashSet<String>())
-                .add(billingMonth);
+        PriceSnapshot snapshot = new PriceSnapshot(
+                room.getRoomType(), room.getBaseRent(), room.getServiceFee(), 3000L, 15000L);
+        Bill bill = new Bill(roomId, month, snapshot,
+                electricStart, electricEnd, waterStart, waterEnd);
+        bills.add(bill);
         return bill;
     }
 
-    private boolean isValidBillingMonth(String monthStr) {
-        if (monthStr == null || !monthStr.matches("^\\d{4}-(0[1-9]|1[0-2])$")) {
+    public boolean isValidBillingMonth(String month) {
+        if (month == null || month.length() != 7 || month.charAt(4) != '-') {
             return false;
         }
-        try {
-            return YearMonth.parse(monthStr, BILLING_MONTH_FORMAT).getYear() > 0;
-        } catch (DateTimeParseException e) {
-            return false;
-        }
-    }
 
-    private void validateMeterReading(int reading, String fieldName) {
-        if (reading < 0 || reading > MAX_METER_READING) {
-            throw new IllegalArgumentException(
-                    fieldName + " phai tu 0 den " + MAX_METER_READING + ".");
+        for (int i = 0; i < month.length(); i++) {
+            if (i != 4 && (month.charAt(i) < '0' || month.charAt(i) > '9')) {
+                return false;
+            }
         }
+
+        int year = Integer.parseInt(month.substring(0, 4));
+        int monthNumber = Integer.parseInt(month.substring(5, 7));
+        return year > 0 && monthNumber >= 1 && monthNumber <= 12;
     }
 }
