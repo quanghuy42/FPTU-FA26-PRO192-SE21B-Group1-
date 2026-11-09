@@ -11,39 +11,44 @@ import java.util.Scanner;
 
 public class PRO192Project {
 
-    private static Path getDataDir() {
+    private Path getDataDir() {
         if (java.nio.file.Files.exists(Paths.get("PRO192Project", "data"))) {
             return Paths.get("PRO192Project", "data");
         }
         return Paths.get("data");
     }
 
-    private static Path getRoomsFile() { 
-        return getDataDir().resolve("rooms.txt"); 
+    private Path getRoomsFile() { 
+        return this.getDataDir().resolve("rooms.txt"); 
     }
-    private static Path getStudentsFile() { 
-        return getDataDir().resolve("students.txt"); 
+    private Path getStudentsFile() { 
+        return this.getDataDir().resolve("students.txt"); 
     }
-    private static Path getPricesFile() { 
-        return getDataDir().resolve("prices.txt"); 
+    private Path getPricesFile() { 
+        return this.getDataDir().resolve("prices.txt"); 
     }
-    private static Path getBillsFile() { 
-        return getDataDir().resolve("bills.txt"); 
+    private Path getBillsFile() { 
+        return this.getDataDir().resolve("bills.txt"); 
     }
 
-    private static Map<String, Room> rooms = new HashMap<String, Room>();
-    private static StudentManager studentManager = new StudentManager(rooms);
-    private static BillService billService = new BillService();
-    private static BillManager billManager = new BillManager();
+    private Map<String, Room> rooms = new HashMap<String, Room>();
+    private StudentManager studentManager = new StudentManager(rooms);
+    private BillService billService = new BillService();
+    private BillManager billManager = new BillManager();
 
-    private static long currentStandardRent = 1200000L;
-    private static long currentServiceRent = 1800000L;
-    private static long currentServiceFee = 300000L;
-    private static long currentElectricityRate = 3000L;
-    private static long currentWaterRate = 15000L;
+    private long currentStandardRent = 1200000L;
+    private long currentServiceRent = 1800000L;
+    private long currentServiceFee = 300000L;
+    private long currentElectricityRate = 3000L;
+    private long currentWaterRate = 15000L;
 
     public static void main(String[] args) {
-        loadAllData();
+        PRO192Project app = new PRO192Project();
+        app.run();
+    }
+
+    public void run() {
+        this.loadAllData();
 
         Scanner scanner = new Scanner(System.in);
         while (true) {
@@ -65,40 +70,40 @@ public class PRO192Project {
             String choice = scanner.nextLine().trim();
             switch (choice) {
                 case "1":
-                    handleRoomMenu(scanner);
-                    saveAllDataSafely();
+                    this.handleRoomMenu(scanner);
+                    this.saveAllDataSafely();
                     break;
                 case "2":
-                    handleStudentMenu(scanner);
-                    saveAllDataSafely();
+                    this.handleStudentMenu(scanner);
+                    this.saveAllDataSafely();
                     break;
                 case "3":
-                    studentManager.displayRoomCapacity();
+                    this.studentManager.displayRoomCapacity();
                     break;
                 case "4":
-                    handleCreateBill(scanner);
-                    saveAllDataSafely();
+                    this.handleCreateBill(scanner);
+                    this.saveAllDataSafely();
                     break;
                 case "5":
-                    handleViewBill(scanner);
+                    this.handleViewBill(scanner);
                     break;
                 case "6":
-                    handlePaymentMenu(scanner);
-                    saveAllDataSafely();
+                    this.handlePaymentMenu(scanner);
+                    this.saveAllDataSafely();
                     break;
                 case "7":
-                    handleUpdatePrice(scanner);
-                    saveAllDataSafely();
+                    this.handleUpdatePrice(scanner);
+                    this.saveAllDataSafely();
                     break;
                 case "8":
-                    saveAllDataSafely();
+                    this.saveAllDataSafely();
                     System.out.println(">> All data successfully saved to data/ directory.");
                     break;
                 case "9":
-                    runAutomatedAcceptanceTests();
+                    this.runAutomatedAcceptanceTests();
                     break;
                 case "0":
-                    saveAllDataSafely();
+                    this.saveAllDataSafely();
                     System.out.println(">> Data safely saved. Goodbye!");
                     return;
                 default:
@@ -107,13 +112,12 @@ public class PRO192Project {
         }
     }
 
-
-    private static void handleRoomMenu(Scanner scanner) {
+    private void handleRoomMenu(Scanner scanner) {
         System.out.println("\n--- CURRENT ROOM LIST ---");
-        if (rooms.isEmpty()) {
+        if (this.rooms.isEmpty()) {
             System.out.println("(No rooms in the system)");
         } else {
-            for (Room r : rooms.values()) {
+            for (Room r : this.rooms.values()) {
                 System.out.println(r);
             }
         }
@@ -131,18 +135,18 @@ public class PRO192Project {
             System.out.print("Enter capacity (1-10): ");
             int cap = Integer.parseInt(scanner.nextLine().trim());
 
-            if (rooms.containsKey(roomId)) {
+            if (this.rooms.containsKey(roomId)) {
                 System.out.println("Error: Room ID already exists in the system!");
                 return;
             }
 
             if (typeChoice.equals("2")) {
-                Room r = new ServiceRoom(roomId, cap, currentServiceRent, currentServiceFee);
-                rooms.put(roomId, r);
+                Room r = new ServiceRoom(roomId, cap, this.currentServiceRent, this.currentServiceFee);
+                this.rooms.put(roomId, r);
                 System.out.println(">> Added service room " + roomId + " successfully!");
             } else {
-                Room r = new StandardRoom(roomId, cap, currentStandardRent);
-                rooms.put(roomId, r);
+                Room r = new StandardRoom(roomId, cap, this.currentStandardRent);
+                this.rooms.put(roomId, r);
                 System.out.println(">> Added standard room " + roomId + " successfully!");
             }
         } catch (Exception e) {
@@ -150,7 +154,7 @@ public class PRO192Project {
         }
     }
 
-    private static void handleStudentMenu(Scanner scanner) {
+    private void handleStudentMenu(Scanner scanner) {
         System.out.println("\n--- STUDENT MANAGEMENT ---");
         System.out.println("1. View student list");
         System.out.println("2. Add new student");
@@ -160,14 +164,14 @@ public class PRO192Project {
         String sub = scanner.nextLine().trim();
 
         if (sub.equals("1")) {
-            studentManager.displayStudents();
+            this.studentManager.displayStudents();
         } else if (sub.equals("2")) {
             try {
                 System.out.print("Enter Student ID (e.g. QE210005): ");
                 String sid = scanner.nextLine().trim();
                 System.out.print("Enter full name: ");
                 String name = scanner.nextLine().trim();
-                if (studentManager.addStudent(sid, name)) {
+                if (this.studentManager.addStudent(sid, name)) {
                     System.out.println(">> Added student successfully!");
                 } else {
                     System.out.println(">> Failed: Student ID already exists or is invalid!");
@@ -180,7 +184,7 @@ public class PRO192Project {
             String sid = scanner.nextLine().trim();
             System.out.print("Enter Room ID to assign: ");
             String rid = scanner.nextLine().trim();
-            if (studentManager.assignStudentToRoom(sid, rid)) {
+            if (this.studentManager.assignStudentToRoom(sid, rid)) {
                 System.out.println(">> Assigned student to room successfully!");
             } else {
                 System.out.println(">> Assignment failed: Room does not exist, room is full, or student already has a room!");
@@ -188,7 +192,7 @@ public class PRO192Project {
         } else if (sub.equals("4")) {
             System.out.print("Enter Student ID to check out: ");
             String sid = scanner.nextLine().trim();
-            if (studentManager.checkOutStudent(sid)) {
+            if (this.studentManager.checkOutStudent(sid)) {
                 System.out.println(">> Checked out student successfully!");
             } else {
                 System.out.println(">> Failed: Student does not exist or is not assigned to any room!");
@@ -196,12 +200,12 @@ public class PRO192Project {
         }
     }
 
-    private static void handleCreateBill(Scanner scanner) {
+    private void handleCreateBill(Scanner scanner) {
         System.out.println("\n--- CREATE UTILITY & ROOM BILL ---");
         try {
             System.out.print("Enter Room ID: ");
             String rid = scanner.nextLine().trim();
-            Room r = rooms.get(rid);
+            Room r = this.rooms.get(rid);
             if (r == null) {
                 System.out.println("Error: Room ID does not exist!");
                 return;
@@ -220,11 +224,11 @@ public class PRO192Project {
             System.out.print("Enter final water reading: ");
             long wEnd = Long.parseLong(scanner.nextLine().trim());
 
-            Bill bill = billManager.createBill(r, month, eStart, eEnd, wStart, wEnd);
+            Bill bill = this.billManager.createBill(r, month, eStart, eEnd, wStart, wEnd);
 
             StorageBill sb = new StorageBill();
             List<StorageBill> currentList = new ArrayList<StorageBill>();
-            for (Bill b : billService.getBillList()) {
+            for (Bill b : this.billService.getBillList()) {
                 currentList.add(new StorageBill(b.getBillId(), b.getRoomId(), b.getBillingMonth(),
                         b.getOldElectricityIndex(), b.getNewElectricityIndex(),
                         b.getOldWaterIndex(), b.getNewWaterIndex(),
@@ -235,7 +239,7 @@ public class PRO192Project {
             String nextId = sb.nextBillId(currentList);
             bill.setBillId(nextId);
 
-            billService.addBill(bill);
+            this.billService.addBill(bill);
             System.out.println(">> BILL CREATED SUCCESSFULLY! Bill ID: " + nextId);
             System.out.printf(">> Total amount due: %,d VND (Status: UNPAID)\n", bill.getTotalAmount());
         } catch (Exception e) {
@@ -243,13 +247,13 @@ public class PRO192Project {
         }
     }
 
-    private static void handleViewBill(Scanner scanner) {
+    private void handleViewBill(Scanner scanner) {
         System.out.print("Enter Bill ID to view details (e.g. HD001): ");
         String bid = scanner.nextLine().trim();
-        billService.viewBillDetails(bid);
+        this.billService.viewBillDetails(bid);
     }
 
-    private static void handlePaymentMenu(Scanner scanner) {
+    private void handlePaymentMenu(Scanner scanner) {
         System.out.println("\n--- PAYMENT & DEBT MANAGEMENT ---");
         System.out.println("1. View unpaid bills & Total debt");
         System.out.println("2. Confirm payment for a bill");
@@ -257,29 +261,29 @@ public class PRO192Project {
         String sub = scanner.nextLine().trim();
 
         if (sub.equals("1")) {
-            billService.listUnpaidBillsAndTotalDebt();
+            this.billService.listUnpaidBillsAndTotalDebt();
         } else if (sub.equals("2")) {
             System.out.print("Enter Bill ID to pay: ");
             String bid = scanner.nextLine().trim();
-            billService.payBill(bid);
+            this.billService.payBill(bid);
         }
     }
 
-    private static void handleUpdatePrice(Scanner scanner) {
+    private void handleUpdatePrice(Scanner scanner) {
         System.out.println("\n--- UPDATE CURRENT PRICE RATES ---");
         System.out.printf("Current rates: Standard Room=%,d | Service Room=%,d (Service Fee=%,d) | Electricity=%,d | Water=%,d\n",
-                currentStandardRent, currentServiceRent, currentServiceFee, currentElectricityRate, currentWaterRate);
+                this.currentStandardRent, this.currentServiceRent, this.currentServiceFee, this.currentElectricityRate, this.currentWaterRate);
         try {
             System.out.print("Enter new standard room rent: ");
-            currentStandardRent = Long.parseLong(scanner.nextLine().trim());
+            this.currentStandardRent = Long.parseLong(scanner.nextLine().trim());
             System.out.print("Enter new service room rent: ");
-            currentServiceRent = Long.parseLong(scanner.nextLine().trim());
+            this.currentServiceRent = Long.parseLong(scanner.nextLine().trim());
             System.out.print("Enter new service fee: ");
-            currentServiceFee = Long.parseLong(scanner.nextLine().trim());
+            this.currentServiceFee = Long.parseLong(scanner.nextLine().trim());
             System.out.print("Enter new electricity rate (VND/kWh): ");
-            currentElectricityRate = Long.parseLong(scanner.nextLine().trim());
+            this.currentElectricityRate = Long.parseLong(scanner.nextLine().trim());
             System.out.print("Enter new water rate (VND/m3): ");
-            currentWaterRate = Long.parseLong(scanner.nextLine().trim());
+            this.currentWaterRate = Long.parseLong(scanner.nextLine().trim());
 
             System.out.println(">> Price rates updated successfully! These rates will apply to subsequent bills.");
         } catch (Exception e) {
@@ -287,40 +291,39 @@ public class PRO192Project {
         }
     }
 
-
-    public static void loadAllData() {
+    public void loadAllData() {
         try {
             StorageRoom sr = new StorageRoom();
-            List<StorageRoom> sRooms = sr.load(getRoomsFile());
-            rooms.clear();
+            List<StorageRoom> sRooms = sr.load(this.getRoomsFile());
+            this.rooms.clear();
             for (StorageRoom s : sRooms) {
                 if ("SERVICE".equalsIgnoreCase(s.getType())) {
-                    rooms.put(s.getId(), new ServiceRoom(s.getId(), s.getCapacity(), s.getRoomCharge(), s.getServiceFee()));
+                    this.rooms.put(s.getId(), new ServiceRoom(s.getId(), s.getCapacity(), s.getRoomCharge(), s.getServiceFee()));
                 } else {
-                    rooms.put(s.getId(), new StandardRoom(s.getId(), s.getCapacity(), s.getRoomCharge()));
+                    this.rooms.put(s.getId(), new StandardRoom(s.getId(), s.getCapacity(), s.getRoomCharge()));
                 }
             }
 
             StoragePrice sp = new StoragePrice();
-            StoragePrice loadedPrice = sp.load(getPricesFile());
+            StoragePrice loadedPrice = sp.load(this.getPricesFile());
             if (loadedPrice.getStandardRoom() > 0) {
-                currentStandardRent = loadedPrice.getStandardRoom();
-                currentServiceRent = loadedPrice.getServiceRoom();
-                currentServiceFee = loadedPrice.getServiceFee();
-                currentElectricityRate = loadedPrice.getElectricRate();
-                currentWaterRate = loadedPrice.getWaterRate();
+                this.currentStandardRent = loadedPrice.getStandardRoom();
+                this.currentServiceRent = loadedPrice.getServiceRoom();
+                this.currentServiceFee = loadedPrice.getServiceFee();
+                this.currentElectricityRate = loadedPrice.getElectricRate();
+                this.currentWaterRate = loadedPrice.getWaterRate();
             }
 
             StorageStudent ss = new StorageStudent();
-            List<StorageStudent> sStudents = ss.load(getStudentsFile());
-            studentManager = new StudentManager(rooms);
+            List<StorageStudent> sStudents = ss.load(this.getStudentsFile());
+            this.studentManager = new StudentManager(this.rooms);
             for (StorageStudent s : sStudents) {
-                studentManager.addStudent(s.getId(), s.getName());
+                this.studentManager.addStudent(s.getId(), s.getName());
                 if (s.getRoomId() != null && !s.getRoomId().equalsIgnoreCase("NONE")) {
-                    Room r = rooms.get(s.getRoomId());
+                    Room r = this.rooms.get(s.getRoomId());
                     if (r != null) {
                         r.addResident(s.getId());
-                        Student st = studentManager.findStudent(s.getId());
+                        Student st = this.studentManager.findStudent(s.getId());
                         if (st != null) {
                             st.assignToRoom(s.getRoomId());
                         }
@@ -329,8 +332,8 @@ public class PRO192Project {
             }
 
             StorageBill sb = new StorageBill();
-            List<StorageBill> sBills = sb.load(getBillsFile());
-            billService = new BillService();
+            List<StorageBill> sBills = sb.load(this.getBillsFile());
+            this.billService = new BillService();
             for (StorageBill b : sBills) {
                 PriceSnapshot snapshot = new PriceSnapshot(b.getRoomType(), b.getRoomCharge(), b.getServiceFee(),
                         b.getElectricRate(), b.getWaterRate());
@@ -339,35 +342,35 @@ public class PRO192Project {
                 if (b.isPaid()) {
                     bill.markAsPaid();
                 }
-                billService.addBill(bill);
+                this.billService.addBill(bill);
             }
         } catch (Exception e) {
             System.out.println("Notice when loading data: " + e.getMessage());
         }
     }
 
-    public static void saveAllDataSafely() {
+    public void saveAllDataSafely() {
         try {
             List<StorageRoom> sRoomList = new ArrayList<StorageRoom>();
-            for (Room r : rooms.values()) {
+            for (Room r : this.rooms.values()) {
                 sRoomList.add(new StorageRoom(r.getRoomType(), r.getRoomId(), r.getCapacity(),
                         r.getBaseRent(), r.getServiceFee()));
             }
-            new StorageRoom().save(sRoomList, getRoomsFile());
+            new StorageRoom().save(sRoomList, this.getRoomsFile());
 
-            StoragePrice sp = new StoragePrice(currentStandardRent, currentServiceRent, currentServiceFee,
-                    currentElectricityRate, currentWaterRate);
-            sp.save(sp, getPricesFile());
+            StoragePrice sp = new StoragePrice(this.currentStandardRent, this.currentServiceRent, this.currentServiceFee,
+                    this.currentElectricityRate, this.currentWaterRate);
+            sp.save(sp, this.getPricesFile());
 
             List<StorageStudent> sStudentList = new ArrayList<StorageStudent>();
-            for (Student s : studentManager.getStudents()) {
+            for (Student s : this.studentManager.getStudents()) {
                 String rId = s.isAssigned() ? s.getCurrentRoomId() : "NONE";
                 sStudentList.add(new StorageStudent(s.getStudentId(), s.getFullName(), rId));
             }
-            new StorageStudent().save(sStudentList, getStudentsFile());
+            new StorageStudent().save(sStudentList, this.getStudentsFile());
 
             List<StorageBill> sBillList = new ArrayList<StorageBill>();
-            for (Bill b : billService.getBillList()) {
+            for (Bill b : this.billService.getBillList()) {
                 sBillList.add(new StorageBill(b.getBillId(), b.getRoomId(), b.getBillingMonth(),
                         b.getOldElectricityIndex(), b.getNewElectricityIndex(),
                         b.getOldWaterIndex(), b.getNewWaterIndex(),
@@ -375,13 +378,13 @@ public class PRO192Project {
                         b.getPriceSnapshot().getServiceFee(), b.getPriceSnapshot().getElectricityRate(),
                         b.getPriceSnapshot().getWaterRate(), b.isPaid() ? "PAID" : "UNPAID"));
             }
-            new StorageBill().save(sBillList, getBillsFile());
+            new StorageBill().save(sBillList, this.getBillsFile());
         } catch (Exception e) {
             System.out.println("Error saving data: " + e.getMessage());
         }
     }
 
-    public static void runAutomatedAcceptanceTests() {
+    public void runAutomatedAcceptanceTests() {
         System.out.println("\n=======================================================");
         System.out.println("   RUNNING AUTOMATED ACCEPTANCE TEST SUITE (K01 - K13)");
         System.out.println("   (Satisfying Section 8 requirements: At least 12 test cases)");
