@@ -5,7 +5,7 @@ public class ServiceRoom extends Room {
 
     public ServiceRoom(String roomId, int capacity, long baseRent, long serviceFee) {
         super(roomId, capacity, baseRent);
-        Room.validateMoney(serviceFee, "Service fee");
+        this.validateMoney(serviceFee, "Service fee");
         this.serviceFee = serviceFee;
     }
 
@@ -25,7 +25,7 @@ public class ServiceRoom extends Room {
     }
 
     public void setServiceFee(long serviceFee) {
-        Room.validateMoney(serviceFee, "Service fee");
+        this.validateMoney(serviceFee, "Service fee");
         this.serviceFee = serviceFee;
     }
 }

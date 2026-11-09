@@ -21,11 +21,11 @@ public class PriceConfig {
 
     public PriceConfig(long standardRoomRent, long serviceRoomRent, long serviceFee, 
             long electricRate, long waterRate) {
-        Room.validateMoney(standardRoomRent, "Standard room rent");
-        Room.validateMoney(serviceRoomRent, "Service room rent");
-        Room.validateMoney(serviceFee, "Service fee");
-        Room.validateMoney(electricRate, "Electric rate");
-        Room.validateMoney(waterRate, "Water rate");
+        this.validateMoney(standardRoomRent, "Standard room rent");
+        this.validateMoney(serviceRoomRent, "Service room rent");
+        this.validateMoney(serviceFee, "Service fee");
+        this.validateMoney(electricRate, "Electric rate");
+        this.validateMoney(waterRate, "Water rate");
         
         this.standardRoomRent = standardRoomRent;
         this.serviceRoomRent = serviceRoomRent;
@@ -35,47 +35,53 @@ public class PriceConfig {
     }
 
     public long getStandardRoomRent() {
-        return standardRoomRent;
+        return this.standardRoomRent;
     }
 
     public void setStandardRoomRent(long standardRoomRent) {
-        Room.validateMoney(standardRoomRent, "Standard room rent");
+        this.validateMoney(standardRoomRent, "Standard room rent");
         this.standardRoomRent = standardRoomRent;
     }
 
     public long getServiceRoomRent() {
-        return serviceRoomRent;
+        return this.serviceRoomRent;
     }
 
     public void setServiceRoomRent(long serviceRoomRent) {
-        Room.validateMoney(serviceRoomRent, "Service room rent");
+        this.validateMoney(serviceRoomRent, "Service room rent");
         this.serviceRoomRent = serviceRoomRent;
     }
 
     public long getServiceFee() {
-        return serviceFee;
+        return this.serviceFee;
     }
 
     public void setServiceFee(long serviceFee) {
-        Room.validateMoney(serviceFee, "Service fee");
+        this.validateMoney(serviceFee, "Service fee");
         this.serviceFee = serviceFee;
     }
 
     public long getElectricRate() {
-        return electricRate;
+        return this.electricRate;
     }
 
     public void setElectricRate(long electricRate) {
-        Room.validateMoney(electricRate, "Electric rate");
+        this.validateMoney(electricRate, "Electric rate");
         this.electricRate = electricRate;
     }
 
     public long getWaterRate() {
-        return waterRate;
+        return this.waterRate;
     }
 
     public void setWaterRate(long waterRate) {
-        Room.validateMoney(waterRate, "Water rate");
+        this.validateMoney(waterRate, "Water rate");
         this.waterRate = waterRate;
+    }
+
+    private void validateMoney(long value, String fieldName) {
+        if (value < 0 || value > 10_000_000L) {
+            throw new IllegalArgumentException(fieldName + " must be between 0 and 10,000,000 VND.");
+        }
     }
 }

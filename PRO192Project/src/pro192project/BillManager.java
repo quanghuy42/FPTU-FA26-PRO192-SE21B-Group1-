@@ -23,7 +23,7 @@ public class BillManager {
         }
 
         String roomId = room.getRoomId();
-        Room.validateRoomId(roomId);
+        room.validateRoomId(roomId);
         if (room.getResidentCount() <= 0) {
             throw new IllegalStateException(
                     "Loi nghiep vu: Phong nay hien dang trong (khong co nguoi o), khong the lap hoa don!");

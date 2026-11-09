@@ -1,6 +1,4 @@
-
 package pro192project;
-
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -41,9 +39,7 @@ public class StudentManager {
         return null;
     }
 
-    public boolean assignStudentToRoom(
-            String studentId, String roomId) {
-
+    public boolean assignStudentToRoom(String studentId, String roomId) {
         Student student = findStudent(studentId);
         Room room = rooms.get(roomId);
 
@@ -55,7 +51,7 @@ public class StudentManager {
             return false;
         }
 
-        if (room.addStudent(studentId)) {
+        if (room.addResident(studentId)) {
             student.assignToRoom(roomId);
             return true;
         }
@@ -64,7 +60,6 @@ public class StudentManager {
     }
 
     public boolean checkOutStudent(String studentId) {
-
         Student student = findStudent(studentId);
 
         if (student == null || !student.isAssigned()) {
@@ -77,7 +72,7 @@ public class StudentManager {
             return false;
         }
 
-        if (room.removeStudent(studentId)) {
+        if (room.removeResident(studentId)) {
             student.checkOut();
             return true;
         }
@@ -86,26 +81,22 @@ public class StudentManager {
     }
 
     public void displayRoomCapacity() {
-
         for (Room room : rooms.values()) {
             System.out.println("--------------------");
             System.out.println("Room: " + room.getRoomId());
             System.out.println("Capacity: " + room.getCapacity());
-            System.out.println("Occupancy: "
-                    + room.getCurrentOccupancy());
-            System.out.println("Available slots: "
-                    + room.getAvailableSlots());
+            System.out.println("Occupancy: " + room.getResidentCount());
+            System.out.println("Available slots: " + room.getVacancy());
         }
     }
 
     public void displayStudents() {
-
         for (Student student : students) {
             System.out.println(student);
         }
     }
 
     public ArrayList<Student> getStudents() {
-        return new ArrayList<Student>(students);
+        return students;
     }
 }

@@ -10,9 +10,9 @@ public abstract class Room {
     private List<String> residentIds;
 
     public Room(String roomId, int capacity, long baseRent) {
-        Room.validateRoomId(roomId);
-        Room.validateCapacity(capacity);
-        Room.validateMoney(baseRent, "Room rent");
+        this.validateRoomId(roomId);
+        this.validateCapacity(capacity);
+        this.validateMoney(baseRent, "Room rent");
         this.roomId = roomId;
         this.capacity = capacity;
         this.baseRent = baseRent;
@@ -26,19 +26,19 @@ public abstract class Room {
     public abstract long getServiceFee();
 
     public String getRoomId() {
-        return roomId;
+        return this.roomId;
     }
 
     public int getCapacity() {
-        return capacity;
+        return this.capacity;
     }
 
     public long getBaseRent() {
-        return baseRent;
+        return this.baseRent;
     }
 
     public void setBaseRent(long baseRent) {
-        Room.validateMoney(baseRent, "Room rent");
+        this.validateMoney(baseRent, "Room rent");
         this.baseRent = baseRent;
     }
 
@@ -70,27 +70,11 @@ public abstract class Room {
         return this.residentIds.remove(studentId);
     }
 
-    public boolean addStudent(String studentId) {
-        return this.addResident(studentId);
-    }
-
-    public boolean removeStudent(String studentId) {
-        return this.removeResident(studentId);
-    }
-
-    public int getCurrentOccupancy() {
-        return this.getResidentCount();
-    }
-
-    public int getAvailableSlots() {
-        return this.getVacancy();
-    }
-
     public List<String> getResidentIds() {
         return new ArrayList<String>(this.residentIds);
     }
 
-    public static void validateRoomId(String roomId) {
+    public void validateRoomId(String roomId) {
         if (roomId == null || roomId.isEmpty()) {
             throw new IllegalArgumentException("Room ID cannot be empty.");
         }
@@ -101,13 +85,13 @@ public abstract class Room {
         }
     }
 
-    public static void validateCapacity(int capacity) {
+    public void validateCapacity(int capacity) {
         if (capacity < 1 || capacity > 10) {
             throw new IllegalArgumentException("Capacity must be between 1 and 10.");
         }
     }
 
-    public static void validateMoney(long value, String fieldName) {
+    public void validateMoney(long value, String fieldName) {
         if (value < 0 || value > 10_000_000L) {
             throw new IllegalArgumentException(fieldName + " must be between 0 and 10,000,000 VND.");
         }
